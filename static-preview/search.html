@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sök — Musikstaden Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/preview.css">
+</head>
+<body>
+  <div class="preview-badge">Preview only — no backend</div>
+  <div class="site">
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a href="index.html" class="site-logo"><img src="assets/images/logo.svg" alt="Musikstaden" width="160" height="48"></a>
+        <nav class="site-nav">
+          <a href="index.html" class="btn btn--outline btn--sm">För artister</a>
+          <a href="#" class="btn btn--primary btn--sm btn--glow">Logga in</a>
+        </nav>
+      </div>
+    </header>
+    <main class="site-main">
+      <section class="search-page section">
+        <div class="container">
+          <div class="search-page__filters">
+            <form class="search-form" action="search.html">
+              <div class="search-form__grid">
+                <div class="search-form__field"><label>Stad</label><select><option>Stockholm</option></select></div>
+                <div class="search-form__field"><label>Eventtyp</label><select><option>Wedding</option></select></div>
+                <div class="search-form__field"><label>Genre</label><select><option>Jazz</option></select></div>
+              </div>
+              <button type="submit" class="btn btn--primary btn--glow btn--search">SÖK ARTISTER</button>
+            </form>
+          </div>
+          <div class="ad-slot ad-slot--empty"><span class="ad-slot__placeholder">Annonsyta</span></div>
+          <h1 class="search-page__title"><strong>8</strong> artister hittades</h1>
+          <div class="artist-grid">
+            <article class="artist-card"><a href="artist.html" class="artist-card__link"><div class="artist-card__image"><div class="artist-card__placeholder">BILD</div></div><div class="artist-card__body"><h3 class="artist-card__title">Luna Andersson</h3><div class="artist-card__tags"><span class="tag tag--genre">JAZZ</span></div><p class="artist-card__city">Stockholm</p></div></a></article>
+            <article class="artist-card"><a href="artist.html" class="artist-card__link"><div class="artist-card__image"><div class="artist-card__placeholder">BILD</div></div><div class="artist-card__body"><h3 class="artist-card__title">The Northern Lights</h3><div class="artist-card__tags"><span class="tag tag--genre">ROCK</span></div><p class="artist-card__city">Stockholm</p></div></a></article>
+            <article class="artist-card"><a href="artist.html" class="artist-card__link"><div class="artist-card__image"><div class="artist-card__placeholder">BILD</div></div><div class="artist-card__body"><h3 class="artist-card__title">Sofia Nilsson</h3><div class="artist-card__tags"><span class="tag tag--genre">CLASSICAL</span></div><p class="artist-card__city">Stockholm</p></div></a></article>
+            <article class="artist-card"><a href="artist.html" class="artist-card__link"><div class="artist-card__image"><div class="artist-card__placeholder">BILD</div></div><div class="artist-card__body"><h3 class="artist-card__title">Blue Line Trio</h3><div class="artist-card__tags"><span class="tag tag--genre">BLUES</span></div><p class="artist-card__city">Stockholm</p></div></a></article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer"><div class="site-footer__bottom"><div class="container"><p>&copy; 2026 Musikstaden — Static preview</p></div></div></footer>
+  </div>
+</body>
+</html>

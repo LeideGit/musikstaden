@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Musikstaden — Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/preview.css">
+</head>
+<body>
+  <div class="preview-badge">Preview only — no backend</div>
+  <div class="site">
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a href="index.html" class="site-logo">
+          <img src="assets/images/logo.svg" alt="Musikstaden" width="160" height="48">
+        </a>
+        <nav class="site-nav">
+          <a href="index.html" class="btn btn--outline btn--sm">För artister</a>
+          <a href="index.html" class="btn btn--outline btn--sm">För spelställen</a>
+          <div class="lang-toggle"><span class="lang-toggle__link is-active">SV</span><span class="lang-toggle__sep">|</span><span class="lang-toggle__link">EN</span></div>
+          <a href="#" class="btn btn--primary btn--sm btn--glow">Logga in</a>
+        </nav>
+      </div>
+    </header>
+    <main class="site-main">
+      <section class="hero">
+        <div class="container">
+          <h1 class="hero__title">Hitta rätt <span class="hero__highlight">lokal artist</span> för <span class="hero__highlight">din stad och ditt event</span></h1>
+          <div class="search-box">
+            <form class="search-form" action="search.html">
+              <div class="search-form__grid">
+                <div class="search-form__field">
+                  <label for="city">Stad</label>
+                  <select id="city" name="city">
+                    <option value="">Välj stad</option>
+                    <option value="stockholm">Stockholm</option>
+                    <option value="goteborg">Göteborg</option>
+                  </select>
+                </div>
+                <div class="search-form__field">
+                  <label for="event">Eventtyp</label>
+                  <select id="event" name="event">
+                    <option value="">Välj event</option>
+                    <option value="wedding">Wedding</option>
+                    <option value="club">Club</option>
+                  </select>
+                  <p class="search-form__hint">Klubb, Bröllop, Företag, Festival...</p>
+                </div>
+                <div class="search-form__field">
+                  <label for="genre">Genre</label>
+                  <select id="genre" name="genre">
+                    <option value="">Alla genrer</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="rock">Rock</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn--primary btn--glow btn--search">SÖK ARTISTER</button>
+            </form>
+          </div>
+        </div>
+      </section>
+      <div class="ad-slot ad-slot--empty"><span class="ad-slot__placeholder">Annonsyta</span></div>
+      <section class="featured section">
+        <div class="container">
+          <h2 class="section__title">Utvalda artister</h2>
+          <p class="section__subtitle">Artister tillgängliga i Stockholm</p>
+          <div class="artist-grid">
+            <article class="artist-card"><a href="artist.html" class="artist-card__link"><div class="artist-card__image"><div class="artist-card__placeholder">BILD</div></div><div class="artist-card__body"><h3 class="artist-card__title">Luna Andersson</h3><div class="artist-card__tags"><span class="tag tag--genre">JAZZ</span><span class="tag tag--genre">SOUL</span></div><p class="artist-card__city">Stockholm</p></div></a></article>
+            <article class="artist-card"><a href="artist.html" class="artist-card__link"><div class="artist-card__image"><div class="artist-card__placeholder">BILD</div></div><div class="artist-card__body"><h3 class="artist-card__title">The Northern Lights</h3><div class="artist-card__tags"><span class="tag tag--genre">ROCK</span><span class="tag tag--genre">INDIE</span></div><p class="artist-card__city">Stockholm</p></div></a></article>
+            <article class="artist-card"><a href="artist.html" class="artist-card__link"><div class="artist-card__image"><div class="artist-card__placeholder">BILD</div></div><div class="artist-card__body"><h3 class="artist-card__title">Sofia Nilsson</h3><div class="artist-card__tags"><span class="tag tag--genre">CLASSICAL</span><span class="tag tag--genre">JAZZ</span></div><p class="artist-card__city">Stockholm</p></div></a></article>
+            <article class="artist-card"><a href="artist.html" class="artist-card__link"><div class="artist-card__image"><div class="artist-card__placeholder">BILD</div></div><div class="artist-card__body"><h3 class="artist-card__title">Echo Chamber</h3><div class="artist-card__tags"><span class="tag tag--genre">ELECTRONIC</span></div><p class="artist-card__city">Göteborg</p></div></a></article>
+          </div>
+          <div class="section__actions"><a href="search.html" class="btn btn--outline">VISA FLER ARTISTER</a></div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="container site-footer__grid">
+        <div class="footer-col"><h3>Om</h3><ul><li><a href="#">Integritet</a></li></ul></div>
+        <div class="footer-col"><h3>För artister</h3><ul><li><a href="#">Ansök</a></li></ul></div>
+        <div class="footer-col"><h3>För spelställen</h3><ul><li><a href="#">Kommer snart</a></li></ul></div>
+        <div class="footer-col"><h3>Support</h3><ul><li><a href="mailto:hello@musikstaden.se">hello@musikstaden.se</a></li></ul></div>
+      </div>
+      <div class="site-footer__bottom"><div class="container"><p>&copy; 2026 Musikstaden — Static preview</p></div></div>
+    </footer>
+  </div>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
