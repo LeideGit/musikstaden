@@ -99,8 +99,23 @@ function musikstaden_custom_login(): void {
 		exit;
 	}
 
-	wp_safe_redirect( home_url( '/dashboard/' ) );
+	wp_safe_redirect( musikstaden_get_post_login_redirect() );
 	exit;
+}
+
+/**
+ * Where to send the user after a successful frontend login.
+ */
+function musikstaden_get_post_login_redirect(): string {
+	$fallback = home_url( '/dashboard/' );
+	$target   = wp_unslash( $_POST['redirect_to'] ?? $_GET['redirect_to'] ?? '' );
+	if ( is_string( $target ) && $target !== '' ) {
+		$validated = wp_validate_redirect( $target, $fallback );
+		if ( $validated ) {
+			return $validated;
+		}
+	}
+	return $fallback;
 }
 
 /**
@@ -120,6 +135,9 @@ function musikstaden_render_login_form(): void {
 	<form class="login-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 		<?php wp_nonce_field( 'musikstaden_login', 'musikstaden_login_nonce' ); ?>
 		<input type="hidden" name="action" value="musikstaden_login">
+		<?php if ( ! empty( $_GET['redirect_to'] ) ) : ?>
+			<input type="hidden" name="redirect_to" value="<?php echo esc_attr( wp_unslash( $_GET['redirect_to'] ) ); ?>">
+		<?php endif; ?>
 		<div class="form-row">
 			<label for="log_email"><?php ms_e( 'login.email', 'Email' ); ?></label>
 			<input type="email" id="log_email" name="log_email" required autocomplete="username">
@@ -145,17 +163,19 @@ function musikstaden_render_login_form(): void {
 /**
  * Require login for dashboard.
  */
-add_action( 'template_redirect', 'musikstaden_protect_dashboard' );
-function musikstaden_protect_dashboard(): void {
+add_action( 'template_redirect', 'musikstaden_protect_artist_pages' );
+function musikstaden_protect_artist_pages(): void {
 	if ( ! is_page() ) {
 		return;
 	}
 	$slug = get_post_field( 'post_name', get_queried_object_id() );
-	if ( 'dashboard' !== $slug ) {
+	if ( ! in_array( $slug, MUSIKSTADEN_ARTIST_PAGE_SLUGS, true ) ) {
 		return;
 	}
 	if ( ! is_user_logged_in() ) {
-		wp_safe_redirect( wp_login_url( home_url( '/dashboard/' ) ) );
+		$redirect = home_url( '/logga-in/' );
+		$redirect = add_query_arg( 'redirect_to', rawurlencode( (string) ( $_SERVER['REQUEST_URI'] ?? '' ) ), $redirect );
+		wp_safe_redirect( $redirect );
 		exit;
 	}
 }

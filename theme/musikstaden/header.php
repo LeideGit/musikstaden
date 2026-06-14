@@ -27,8 +27,17 @@
 				<span class="site-nav-toggle__bar" aria-hidden="true"></span>
 			</button>
 			<nav id="site-nav" class="site-nav" aria-label="<?php esc_attr_e( 'Huvudnavigation', 'musikstaden' ); ?>">
-				<a href="<?php echo esc_url( home_url( '/for-artists/' ) ); ?>" class="btn btn--outline btn--sm"><?php ms_e( 'nav.apply', 'Ansök' ); ?></a>
-				<a href="<?php echo esc_url( home_url( '/logga-in/' ) ); ?>" class="btn btn--primary btn--sm btn--glow"><?php ms_e( 'nav.login', 'Logga in' ); ?></a>
+				<a href="<?php echo esc_url( musikstaden_search_url() ); ?>" class="btn btn--outline btn--sm">
+					<span aria-hidden="true">&#128269;</span>
+					<?php ms_e( 'nav.search', 'Sök' ); ?>
+				</a>
+				<?php if ( is_user_logged_in() ) : ?>
+					<a href="<?php echo esc_url( home_url( '/dashboard/' ) ); ?>" class="btn btn--outline btn--sm"><?php ms_e( 'nav.dashboard', 'Dashboard' ); ?></a>
+					<a href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>" class="btn btn--primary btn--sm btn--glow"><?php ms_e( 'nav.logout', 'Logga ut' ); ?></a>
+				<?php else : ?>
+					<a href="<?php echo esc_url( home_url( '/for-artists/' ) ); ?>" class="btn btn--outline btn--sm"><?php ms_e( 'nav.apply', 'Ansök' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/logga-in/' ) ); ?>" class="btn btn--primary btn--sm btn--glow"><?php ms_e( 'nav.login', 'Logga in' ); ?></a>
+				<?php endif; ?>
 			</nav>
 		</div>
 	</header>

@@ -668,6 +668,7 @@ function musikstaden_send_application_approved_email( int $user_id, int $app_id,
 	$band_name = $band_id ? get_the_title( $band_id ) : musikstaden_get_application_field( $app_id, 'app_band_name' );
 	$login_url = home_url( '/logga-in/' );
 	$dash_url  = home_url( '/dashboard/' );
+	$edit_url  = $band_id ? musikstaden_band_edit_url( $band_id ) : '';
 	$site      = get_bloginfo( 'name' );
 
 	$key = get_password_reset_key( $user );
@@ -720,6 +721,11 @@ function musikstaden_send_application_approved_email( int $user_id, int $app_id,
 	$lines[] = '';
 	$lines[] = __( 'Min panel:', 'musikstaden' );
 	$lines[] = $dash_url;
+	if ( $edit_url ) {
+		$lines[] = '';
+		$lines[] = __( 'Redigera band-sida:', 'musikstaden' );
+		$lines[] = $edit_url;
+	}
 	$lines[] = '';
 	$lines[] = __( 'Har du frågor? Svara på detta mail eller skriv till hello@musikstaden.se', 'musikstaden' );
 	$lines[] = '';

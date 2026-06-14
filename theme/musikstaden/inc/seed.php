@@ -115,6 +115,8 @@ function musikstaden_seed_bands(): void {
 function musikstaden_seed_pages(): void {
 	$pages = array(
 		array( 'title' => 'Dashboard', 'slug' => 'dashboard', 'template' => 'page-dashboard.php' ),
+		array( 'title' => 'Redigera band', 'slug' => 'redigera-band', 'template' => 'page-band-studio.php' ),
+		array( 'title' => 'Nytt band', 'slug' => 'nytt-band', 'template' => 'page-band-studio.php' ),
 		array( 'title' => 'Logga in', 'slug' => 'logga-in', 'template' => 'page-login.php' ),
 		array( 'title' => 'För artister', 'slug' => 'for-artists', 'template' => 'page-for-artists.php' ),
 		array( 'title' => 'För spelställen', 'slug' => 'for-venues', 'template' => 'page-for-venues.php' ),

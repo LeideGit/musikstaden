@@ -28,6 +28,7 @@ require_once MUSIKSTADEN_DIR . '/inc/similar-artists.php';
 require_once MUSIKSTADEN_DIR . '/inc/applications.php';
 require_once MUSIKSTADEN_DIR . '/inc/invites.php';
 require_once MUSIKSTADEN_DIR . '/inc/auth.php';
+require_once MUSIKSTADEN_DIR . '/inc/band-studio.php';
 require_once MUSIKSTADEN_DIR . '/inc/i18n.php';
 require_once MUSIKSTADEN_DIR . '/inc/seed.php';
 require_once MUSIKSTADEN_DIR . '/inc/admin.php';
