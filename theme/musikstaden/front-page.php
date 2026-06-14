@@ -27,8 +27,8 @@ $title_html = preg_replace(
 			class="hero-banner__logo"
 			src="<?php echo esc_url( MUSIKSTADEN_URI . '/assets/images/logo.png' ); ?>"
 			alt="<?php bloginfo( 'name' ); ?>"
-			width="320"
-			height="120"
+			width="717"
+			height="270"
 		>
 		<h1 class="hero-banner__title"><?php echo wp_kses_post( $title_html ); ?></h1>
 		<p class="hero-banner__subtitle"><?php ms_e( 'hero.subtitle', 'Upptäck lokala band och artister — sök efter stad, event och genre.' ); ?></p>

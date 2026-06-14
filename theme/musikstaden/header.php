@@ -11,7 +11,7 @@
 	<header class="site-header">
 		<div class="container site-header__inner">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo">
-				<img src="<?php echo esc_url( MUSIKSTADEN_URI . '/assets/images/logo.png' ); ?>" alt="<?php bloginfo( 'name' ); ?>" width="200" height="75">
+				<img src="<?php echo esc_url( MUSIKSTADEN_URI . '/assets/images/logo.png' ); ?>" alt="<?php bloginfo( 'name' ); ?>" width="717" height="270">
 			</a>
 			<button
 				type="button"

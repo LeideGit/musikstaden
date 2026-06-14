@@ -68,7 +68,12 @@ a:hover { color: var(--text); }
   flex-wrap: wrap;
 }
 
-.site-logo img { height: 44px; width: auto; }
+.site-logo img {
+  height: clamp(36px, 8vw, 44px);
+  width: auto;
+  max-width: min(52vw, 220px);
+  object-fit: contain;
+}
 
 .site-nav {
   display: flex;
@@ -187,9 +192,11 @@ a:hover { color: var(--text); }
 }
 
 .hero-banner__logo {
-  height: clamp(88px, 14vw, 148px);
+  height: clamp(72px, 16vw, 140px);
   width: auto;
+  max-width: min(92vw, 520px);
   margin-inline: auto;
+  object-fit: contain;
   filter: drop-shadow(0 0 36px rgba(168, 85, 247, 0.55));
 }
 
