@@ -10,8 +10,8 @@
 
 declare(strict_types=1);
 
-define( 'MUSIKSTADEN_VERSION', '1.0.21' );
-define( 'MUSIKSTADEN_VERSION_NAME', 'Band Studio' );
+define( 'MUSIKSTADEN_VERSION', '1.0.22' );
+define( 'MUSIKSTADEN_VERSION_NAME', 'Studio Route Fix' );
 
 /**
  * Full version label for display, e.g. "1.0.1 — Approval Fix".

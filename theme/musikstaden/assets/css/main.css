@@ -82,6 +82,28 @@ a:hover { color: var(--text); }
   flex-wrap: wrap;
 }
 
+.site-nav__search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--purple-bright);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition), box-shadow var(--transition);
+}
+
+.site-nav__search:hover,
+.site-nav__search:focus-visible {
+  color: var(--text);
+  background: rgba(168, 85, 247, 0.12);
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.25);
+}
+
+.site-nav__search-icon {
+  display: block;
+}
+
 .site-nav-toggle {
   display: none;
   align-items: center;
@@ -1345,6 +1367,11 @@ a:hover { color: var(--text); }
   .site-nav .btn {
     width: 100%;
     text-align: center;
+  }
+
+  .site-nav__search {
+    align-self: center;
+    margin: 0 auto;
   }
 }
 

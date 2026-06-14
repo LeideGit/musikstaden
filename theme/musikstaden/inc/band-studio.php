@@ -10,7 +10,11 @@ declare(strict_types=1);
 /** @var list<string> */
 const MUSIKSTADEN_ARTIST_PAGE_SLUGS = array( 'dashboard', 'redigera-band', 'nytt-band' );
 
+add_action( 'init', 'musikstaden_register_studio_rewrites', 21 );
 add_action( 'init', 'musikstaden_ensure_studio_pages', 25 );
+add_action( 'init', 'musikstaden_maybe_flush_studio_rewrites', 99 );
+add_action( 'after_switch_theme', 'musikstaden_ensure_studio_pages' );
+add_action( 'template_redirect', 'musikstaden_studio_template_redirect', 1 );
 add_action( 'admin_post_musikstaden_save_band', 'musikstaden_handle_band_studio_save' );
 add_action( 'admin_post_musikstaden_delete_band', 'musikstaden_handle_band_studio_delete' );
 add_action( 'load-post.php', 'musikstaden_redirect_band_admin_to_studio' );
@@ -42,13 +46,131 @@ function musikstaden_dashboard_url( string $notice = '' ): string {
 }
 
 /**
- * Create studio pages on existing installs (seed handles fresh installs).
+ * Register rewrite rules so studio URLs work without relying on WP pages.
  */
-function musikstaden_ensure_studio_pages(): void {
-	if ( get_option( 'musikstaden_studio_pages_v1' ) ) {
+function musikstaden_register_studio_rewrites(): void {
+	add_rewrite_rule( '^redigera-band/?$', 'index.php?musikstaden_studio=edit', 'top' );
+	add_rewrite_rule( '^nytt-band/?$', 'index.php?musikstaden_studio=create', 'top' );
+}
+
+/**
+ * Flush rewrites once per theme version (studio routes added in 1.0.22).
+ */
+function musikstaden_maybe_flush_studio_rewrites(): void {
+	if ( get_option( 'musikstaden_studio_rewrite_version' ) === MUSIKSTADEN_VERSION ) {
+		return;
+	}
+	flush_rewrite_rules( false );
+	update_option( 'musikstaden_studio_rewrite_version', MUSIKSTADEN_VERSION );
+}
+
+/**
+ * Current Band Studio route: edit, create, or null.
+ */
+function musikstaden_get_studio_route(): ?string {
+	$studio = get_query_var( 'musikstaden_studio' );
+	if ( in_array( $studio, array( 'edit', 'create' ), true ) ) {
+		return $studio;
+	}
+
+	if ( is_page( 'nytt-band' ) ) {
+		return 'create';
+	}
+	if ( is_page( 'redigera-band' ) ) {
+		return 'edit';
+	}
+
+	global $wp;
+	$request = isset( $wp->request ) ? trim( (string) $wp->request, '/' ) : '';
+	if ( 'nytt-band' === $request ) {
+		return 'create';
+	}
+	if ( 'redigera-band' === $request ) {
+		return 'edit';
+	}
+
+	return null;
+}
+
+/**
+ * Whether the current request is a Band Studio screen.
+ */
+function musikstaden_is_studio_screen(): bool {
+	return null !== musikstaden_get_studio_route();
+}
+
+/**
+ * Serve Band Studio when the URL matches but no WP page exists (404 fix).
+ */
+function musikstaden_studio_template_redirect(): void {
+	if ( is_admin() ) {
 		return;
 	}
 
+	$route = musikstaden_get_studio_route();
+	if ( ! $route ) {
+		return;
+	}
+
+	if ( is_page() ) {
+		$page_id = get_queried_object_id();
+		$tpl     = $page_id ? get_page_template_slug( $page_id ) : '';
+		if ( 'page-band-studio.php' === $tpl ) {
+			return;
+		}
+	}
+
+	musikstaden_load_band_studio( 'create' === $route );
+	exit;
+}
+
+/**
+ * Auth gate + render Band Studio (create or edit).
+ */
+function musikstaden_load_band_studio( bool $is_create ): void {
+	if ( ! is_user_logged_in() ) {
+		wp_safe_redirect(
+			add_query_arg(
+				'redirect_to',
+				rawurlencode( (string) ( $_SERVER['REQUEST_URI'] ?? '' ) ),
+				home_url( '/logga-in/' )
+			)
+		);
+		exit;
+	}
+
+	$band_id = isset( $_GET['band'] ) ? (int) $_GET['band'] : 0;
+	$user_id = get_current_user_id();
+
+	if ( $is_create ) {
+		if ( ! musikstaden_user_can_create_band( $user_id ) ) {
+			wp_safe_redirect( musikstaden_dashboard_url( 'limit' ) );
+			exit;
+		}
+	} else {
+		if ( ! $band_id || 'band' !== get_post_type( $band_id ) ) {
+			wp_safe_redirect( musikstaden_dashboard_url() );
+			exit;
+		}
+		if ( ! musikstaden_user_can_edit_band( $user_id, $band_id ) ) {
+			wp_safe_redirect( musikstaden_dashboard_url( 'error' ) );
+			exit;
+		}
+	}
+
+	status_header( 200 );
+	nocache_headers();
+
+	get_header();
+	musikstaden_render_band_studio_form( $band_id, $is_create );
+	get_footer();
+	exit;
+}
+
+/**
+ * Ensure studio WP pages exist and have the correct template (seed handles fresh installs).
+ */
+function musikstaden_ensure_studio_pages(): void {
 	$pages = array(
 		array(
 			'title'    => 'Redigera band',
@@ -63,7 +185,12 @@ function musikstaden_ensure_studio_pages(): void {
 	);
 
 	foreach ( $pages as $page ) {
-		if ( get_page_by_path( $page['slug'] ) ) {
+		$existing = get_page_by_path( $page['slug'], OBJECT, 'page' );
+		if ( $existing instanceof WP_Post ) {
+			$tpl = get_post_meta( $existing->ID, '_wp_page_template', true );
+			if ( $page['template'] !== $tpl ) {
+				update_post_meta( $existing->ID, '_wp_page_template', $page['template'] );
+			}
 			continue;
 		}
 		$id = wp_insert_post(
@@ -78,15 +205,13 @@ function musikstaden_ensure_studio_pages(): void {
 			update_post_meta( $id, '_wp_page_template', $page['template'] );
 		}
 	}
-
-	update_option( 'musikstaden_studio_pages_v1', 1 );
 }
 
 /**
  * Enqueue editor styles on studio pages.
  */
 function musikstaden_enqueue_studio_assets(): void {
-	if ( ! is_page( array( 'redigera-band', 'nytt-band' ) ) ) {
+	if ( ! musikstaden_is_studio_screen() ) {
 		return;
 	}
 	wp_enqueue_editor();

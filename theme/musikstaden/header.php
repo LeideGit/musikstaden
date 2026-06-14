@@ -27,9 +27,11 @@
 				<span class="site-nav-toggle__bar" aria-hidden="true"></span>
 			</button>
 			<nav id="site-nav" class="site-nav" aria-label="<?php esc_attr_e( 'Huvudnavigation', 'musikstaden' ); ?>">
-				<a href="<?php echo esc_url( musikstaden_search_url() ); ?>" class="btn btn--outline btn--sm">
-					<span aria-hidden="true">&#128269;</span>
-					<?php ms_e( 'nav.search', 'Sök' ); ?>
+				<a href="<?php echo esc_url( musikstaden_search_url() ); ?>" class="site-nav__search" aria-label="<?php echo esc_attr( ms__( 'nav.search', 'Sök' ) ); ?>">
+					<svg class="site-nav__search-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+						<circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+						<path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+					</svg>
 				</a>
 				<?php if ( is_user_logged_in() ) : ?>
 					<a href="<?php echo esc_url( home_url( '/dashboard/' ) ); ?>" class="btn btn--outline btn--sm"><?php ms_e( 'nav.dashboard', 'Dashboard' ); ?></a>

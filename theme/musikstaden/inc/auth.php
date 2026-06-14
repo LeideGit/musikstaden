@@ -165,13 +165,27 @@ function musikstaden_render_login_form(): void {
  */
 add_action( 'template_redirect', 'musikstaden_protect_artist_pages' );
 function musikstaden_protect_artist_pages(): void {
-	if ( ! is_page() ) {
+	if ( is_admin() ) {
 		return;
 	}
-	$slug = get_post_field( 'post_name', get_queried_object_id() );
-	if ( ! in_array( $slug, MUSIKSTADEN_ARTIST_PAGE_SLUGS, true ) ) {
+
+	$needs_login = false;
+
+	if ( is_page() ) {
+		$slug = get_post_field( 'post_name', get_queried_object_id() );
+		if ( in_array( $slug, MUSIKSTADEN_ARTIST_PAGE_SLUGS, true ) ) {
+			$needs_login = true;
+		}
+	}
+
+	if ( musikstaden_is_studio_screen() ) {
+		$needs_login = true;
+	}
+
+	if ( ! $needs_login ) {
 		return;
 	}
+
 	if ( ! is_user_logged_in() ) {
 		$redirect = home_url( '/logga-in/' );
 		$redirect = add_query_arg( 'redirect_to', rawurlencode( (string) ( $_SERVER['REQUEST_URI'] ?? '' ) ), $redirect );

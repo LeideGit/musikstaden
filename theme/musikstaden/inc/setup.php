@@ -109,6 +109,7 @@ function musikstaden_query_vars( array $vars ): array {
 	$vars[] = 'ms_city';
 	$vars[] = 'ms_genre';
 	$vars[] = 'ms_invite';
+	$vars[] = 'musikstaden_studio';
 	return $vars;
 }
 
