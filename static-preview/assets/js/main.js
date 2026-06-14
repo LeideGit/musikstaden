@@ -44,8 +44,22 @@
     });
   }
 
+  function initBookingAccordion() {
+    document.querySelectorAll('.band-booking__toggle').forEach(function (toggle) {
+      var panel = document.getElementById(toggle.getAttribute('aria-controls'));
+      if (!panel) return;
+
+      toggle.addEventListener('click', function () {
+        var expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        panel.hidden = expanded;
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initCookieBanner();
     initCardHoverGlow();
+    initBookingAccordion();
   });
 })();

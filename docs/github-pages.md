@@ -77,3 +77,13 @@ Then enable Pages → GitHub Actions as in step 3.
 ## What gets deployed
 
 Only the `static-preview/` folder — **not** the WordPress theme. Production WordPress stays on SiteGround; see [deploy-siteground.md](deploy-siteground.md).
+
+**Important:** Theme CSS/JS changes do not appear on GitHub Pages until you sync them into `static-preview/` and push to `main`. After theme updates, copy at minimum:
+
+```bash
+cp theme/musikstaden/assets/css/main.css static-preview/assets/css/main.css
+cp theme/musikstaden/assets/js/main.js static-preview/assets/js/main.js
+# Update static-preview/*.html if layout changed (e.g. artist.html)
+```
+
+Then commit and push to `main` — the **Deploy Static Preview** workflow redeploys Pages automatically.

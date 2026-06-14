@@ -118,6 +118,7 @@ Use this to share design previews; real functionality requires WordPress on Site
 2. Upload changed files via SFTP (overwrite), or re-zip and upload
 3. No need to deactivate theme for CSS/PHP updates
 4. **Purge cache** after every theme upload (see Troubleshooting below)
+5. **Sync GitHub Pages preview:** copy theme assets into `static-preview/` and push to `main` (see [github-pages.md](github-pages.md))
 
 ## Troubleshooting
 
