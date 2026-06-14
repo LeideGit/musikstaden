@@ -399,10 +399,16 @@ a:hover { color: var(--text); }
   margin: 0.15rem 0.25rem 0.15rem 0;
 }
 
-.tag--genre,
-.tag--gig {
+.tag--genre {
   border: 1px solid var(--purple);
   color: var(--purple-bright);
+  background: transparent;
+}
+
+.tag--gig_type,
+.tag--gig {
+  border: 1px solid var(--orange);
+  color: var(--orange-bright);
   background: transparent;
 }
 
@@ -529,12 +535,6 @@ a:hover { color: var(--text); }
   margin: 0;
   font-size: 0.68rem;
   padding: 0.35rem 0.65rem;
-}
-
-.band-page .tag--gig_type {
-  border-color: var(--orange);
-  color: var(--orange-bright);
-  background: rgba(249, 115, 22, 0.12);
 }
 
 .band-page__layout {
