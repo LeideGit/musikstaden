@@ -57,6 +57,82 @@
     });
   }
 
+  function initCheckDropdowns() {
+    document.querySelectorAll('[data-ms-check-dropdown]').forEach(function (dropdown) {
+      var trigger = dropdown.querySelector('.ms-check-dropdown__trigger');
+      var menu = dropdown.querySelector('.ms-check-dropdown__menu');
+      var textEl = dropdown.querySelector('.ms-check-dropdown__text');
+      if (!trigger || !menu || !textEl) return;
+
+      function updateLabel() {
+        var checked = dropdown.querySelectorAll('[data-ms-check-option]:checked').length;
+        var placeholder = textEl.dataset.placeholder || '';
+        var countLabel = textEl.dataset.countLabel || '%d valda';
+        if (checked > 0) {
+          textEl.textContent = countLabel.replace('%d', String(checked));
+        } else {
+          textEl.textContent = placeholder;
+        }
+        dropdown.classList.remove('is-invalid');
+      }
+
+      function setOpen(isOpen) {
+        trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        menu.hidden = !isOpen;
+      }
+
+      trigger.addEventListener('click', function () {
+        var isOpen = trigger.getAttribute('aria-expanded') === 'true';
+        document.querySelectorAll('[data-ms-check-dropdown] .ms-check-dropdown__trigger[aria-expanded="true"]').forEach(function (otherTrigger) {
+          if (otherTrigger !== trigger) {
+            otherTrigger.setAttribute('aria-expanded', 'false');
+            var otherMenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
+            if (otherMenu) otherMenu.hidden = true;
+          }
+        });
+        setOpen(!isOpen);
+      });
+
+      dropdown.querySelectorAll('[data-ms-check-option]').forEach(function (input) {
+        input.addEventListener('change', updateLabel);
+      });
+
+      updateLabel();
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('[data-ms-check-dropdown]')) return;
+      document.querySelectorAll('[data-ms-check-dropdown]').forEach(function (dropdown) {
+        var trigger = dropdown.querySelector('.ms-check-dropdown__trigger');
+        var menu = dropdown.querySelector('.ms-check-dropdown__menu');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        if (menu) menu.hidden = true;
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('[data-ms-check-dropdown]').forEach(function (dropdown) {
+        var trigger = dropdown.querySelector('.ms-check-dropdown__trigger');
+        var menu = dropdown.querySelector('.ms-check-dropdown__menu');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        if (menu) menu.hidden = true;
+      });
+    });
+
+    document.querySelectorAll('.band-studio__form').forEach(function (form) {
+      form.addEventListener('submit', function (e) {
+        var blocked = false;
+        form.querySelectorAll('[data-ms-check-dropdown][data-required]').forEach(function (dropdown) {
+          var hasChecked = dropdown.querySelector('[data-ms-check-option]:checked');
+          dropdown.classList.toggle('is-invalid', !hasChecked);
+          if (!hasChecked) blocked = true;
+        });
+        if (blocked) e.preventDefault();
+      });
+    });
+  }
+
   function initMobileNav() {
     var toggle = document.querySelector('.site-nav-toggle');
     var nav = document.getElementById('site-nav');
@@ -98,6 +174,7 @@
     initCookieBanner();
     initCardHoverGlow();
     initBookingAccordion();
+    initCheckDropdowns();
     initMobileNav();
   });
 })();

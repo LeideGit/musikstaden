@@ -570,6 +570,77 @@ function musikstaden_handle_band_studio_delete(): void {
 }
 
 /**
+ * Collapsible multi-select dropdown with checkboxes (genres, booking types).
+ *
+ * @param WP_Term[] $terms Taxonomy terms.
+ * @param string[]  $selected_slugs Selected term slugs.
+ */
+function musikstaden_render_studio_checkbox_dropdown(
+	string $field_id,
+	string $input_name,
+	array $terms,
+	array $selected_slugs,
+	string $placeholder,
+	bool $required = false
+): void {
+	$selected_count = 0;
+	foreach ( $terms as $term ) {
+		if ( in_array( $term->slug, $selected_slugs, true ) ) {
+			++$selected_count;
+		}
+	}
+
+	if ( $selected_count > 0 ) {
+		$trigger_label = sprintf( ms__( 'studio.dropdown_count', '%d valda' ), $selected_count );
+	} else {
+		$trigger_label = $placeholder;
+	}
+	?>
+	<div
+		class="ms-check-dropdown"
+		data-ms-check-dropdown
+		<?php echo $required ? ' data-required="true"' : ''; ?>
+	>
+		<button
+			type="button"
+			class="ms-check-dropdown__trigger"
+			id="<?php echo esc_attr( $field_id ); ?>-trigger"
+			aria-expanded="false"
+			aria-controls="<?php echo esc_attr( $field_id ); ?>-menu"
+			aria-haspopup="listbox"
+		>
+			<span
+				class="ms-check-dropdown__text"
+				data-placeholder="<?php echo esc_attr( $placeholder ); ?>"
+				data-count-label="<?php echo esc_attr( ms__( 'studio.dropdown_count', '%d valda' ) ); ?>"
+			><?php echo esc_html( $trigger_label ); ?></span>
+			<span class="ms-check-dropdown__chevron" aria-hidden="true"></span>
+		</button>
+		<div
+			class="ms-check-dropdown__menu"
+			id="<?php echo esc_attr( $field_id ); ?>-menu"
+			role="listbox"
+			aria-multiselectable="true"
+			hidden
+		>
+			<?php foreach ( $terms as $term ) : ?>
+				<label class="ms-check-dropdown__option">
+					<input
+						type="checkbox"
+						name="<?php echo esc_attr( $input_name ); ?>[]"
+						value="<?php echo esc_attr( $term->slug ); ?>"
+						<?php checked( in_array( $term->slug, $selected_slugs, true ) ); ?>
+						data-ms-check-option
+					>
+					<?php echo esc_html( $term->name ); ?>
+				</label>
+			<?php endforeach; ?>
+		</div>
+	</div>
+	<?php
+}
+
+/**
  * Render the Band Studio form.
  */
 function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): void {
@@ -669,8 +740,8 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 						<input type="hidden" name="action" value="musikstaden_save_band">
 						<input type="hidden" name="band_id" value="<?php echo esc_attr( (string) $band_id ); ?>">
 
-						<fieldset class="band-studio__panel">
-							<legend><?php ms_e( 'studio.section_basics', 'Grundinfo' ); ?></legend>
+						<div class="band-studio__panel">
+							<h3 class="band-studio__panel-title"><?php ms_e( 'studio.section_basics', 'Grundinfo' ); ?></h3>
 							<div class="form-row">
 								<label for="band_title"><?php ms_e( 'studio.field_name', 'Bandnamn' ); ?> <span class="required">*</span></label>
 								<input type="text" id="band_title" name="band_title" required value="<?php echo esc_attr( $band ? $band->post_title : '' ); ?>">
@@ -689,10 +760,10 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 								<?php endif; ?>
 								<input type="file" id="hero_image" name="hero_image" accept="image/jpeg,image/png,image/webp">
 							</div>
-						</fieldset>
+						</div>
 
-						<fieldset class="band-studio__panel">
-							<legend><?php ms_e( 'studio.section_location', 'Plats & genre' ); ?></legend>
+						<div class="band-studio__panel">
+							<h3 class="band-studio__panel-title"><?php ms_e( 'studio.section_location', 'Plats & genre' ); ?></h3>
 							<div class="form-row">
 								<label for="band_city"><?php ms_e( 'studio.field_city', 'Stad' ); ?> <span class="required">*</span></label>
 								<select id="band_city" name="band_city" required>
@@ -708,38 +779,37 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 								</select>
 							</div>
 							<div class="form-row">
-								<span class="label"><?php ms_e( 'studio.field_genres', 'Genrer' ); ?> <span class="required">*</span></span>
-								<div class="checkbox-grid">
-									<?php
-									$genre_slugs = ! is_wp_error( $genre_terms ) ? $genre_terms : array();
-									foreach ( musikstaden_get_filter_terms( 'genre' ) as $term ) :
-										?>
-										<label class="checkbox-grid__item">
-											<input type="checkbox" name="band_genres[]" value="<?php echo esc_attr( $term->slug ); ?>" <?php checked( in_array( $term->slug, $genre_slugs, true ) ); ?>>
-											<?php echo esc_html( $term->name ); ?>
-										</label>
-									<?php endforeach; ?>
-								</div>
+								<label for="band_genres-trigger"><?php ms_e( 'studio.field_genres', 'Genrer' ); ?> <span class="required">*</span></label>
+								<?php
+								$genre_slugs = ! is_wp_error( $genre_terms ) ? $genre_terms : array();
+								musikstaden_render_studio_checkbox_dropdown(
+									'band_genres',
+									'band_genres',
+									musikstaden_get_filter_terms( 'genre' ),
+									$genre_slugs,
+									ms__( 'studio.genres_placeholder', 'Välj genrer' ),
+									true
+								);
+								?>
 							</div>
 							<div class="form-row">
-								<span class="label"><?php ms_e( 'studio.field_gig_types', 'Bokningstyper' ); ?></span>
+								<label for="band_gig_types-trigger"><?php ms_e( 'studio.field_gig_types', 'Bokningstyper' ); ?></label>
 								<p class="field-hint"><?php ms_e( 'studio.field_gig_hint', 'Välj vilka typer av gig ni tar — bröllop, företag, festival m.m.' ); ?></p>
-								<div class="checkbox-grid">
-									<?php
-									$gig_slugs = ! is_wp_error( $gig_terms ) ? $gig_terms : array();
-									foreach ( musikstaden_get_filter_terms( 'gig_type' ) as $term ) :
-										?>
-										<label class="checkbox-grid__item">
-											<input type="checkbox" name="band_gig_types[]" value="<?php echo esc_attr( $term->slug ); ?>" <?php checked( in_array( $term->slug, $gig_slugs, true ) ); ?>>
-											<?php echo esc_html( $term->name ); ?>
-										</label>
-									<?php endforeach; ?>
-								</div>
+								<?php
+								$gig_slugs = ! is_wp_error( $gig_terms ) ? $gig_terms : array();
+								musikstaden_render_studio_checkbox_dropdown(
+									'band_gig_types',
+									'band_gig_types',
+									musikstaden_get_filter_terms( 'gig_type' ),
+									$gig_slugs,
+									ms__( 'studio.gig_types_placeholder', 'Välj bokningstyper' )
+								);
+								?>
 							</div>
-						</fieldset>
+						</div>
 
-						<fieldset class="band-studio__panel">
-							<legend><?php ms_e( 'studio.section_bio', 'Om bandet' ); ?></legend>
+						<div class="band-studio__panel">
+							<h3 class="band-studio__panel-title"><?php ms_e( 'studio.section_bio', 'Om bandet' ); ?></h3>
 							<div class="form-row">
 								<label for="biography"><?php ms_e( 'studio.field_bio', 'Biografi' ); ?> <span class="required">*</span></label>
 								<?php
@@ -761,10 +831,10 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 								<p class="field-hint"><?php ms_e( 'studio.field_booking_hint', 'Privat adress för bokningsförfrågningar. Visas inte publikt.' ); ?></p>
 								<input type="email" id="booking_email" name="booking_email" placeholder="bokning@band.se" value="<?php echo esc_attr( $band ? (string) musikstaden_get_field( 'booking_email', $band_id ) : '' ); ?>">
 							</div>
-						</fieldset>
+						</div>
 
-						<fieldset class="band-studio__panel">
-							<legend><?php ms_e( 'studio.section_media', 'Musik & video' ); ?></legend>
+						<div class="band-studio__panel">
+							<h3 class="band-studio__panel-title"><?php ms_e( 'studio.section_media', 'Musik & video' ); ?></h3>
 							<div class="form-row">
 								<label for="embed_spotify"><?php ms_e( 'studio.field_spotify', 'Spotify' ); ?></label>
 								<p class="field-hint"><?php ms_e( 'studio.field_embed_hint', 'Klistra in Spotify-inbäddningskod (Delas → Bädda in) eller länk. Flera? Separera med tom rad.' ); ?></p>
@@ -774,10 +844,10 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 								<label for="embed_youtube"><?php ms_e( 'studio.field_youtube', 'YouTube' ); ?></label>
 								<textarea id="embed_youtube" name="embed_youtube" rows="4"><?php echo esc_textarea( $band ? (string) musikstaden_get_field( 'embed_youtube', $band_id ) : '' ); ?></textarea>
 							</div>
-						</fieldset>
+						</div>
 
-						<fieldset class="band-studio__panel">
-							<legend><?php ms_e( 'studio.section_social', 'Sociala länkar' ); ?></legend>
+						<div class="band-studio__panel">
+							<h3 class="band-studio__panel-title"><?php ms_e( 'studio.section_social', 'Sociala länkar' ); ?></h3>
 							<?php
 							$social_labels = array(
 								'social_instagram' => ms__( 'studio.social_instagram', 'Instagram' ),
@@ -793,7 +863,7 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 									<input type="url" id="<?php echo esc_attr( $field ); ?>" name="<?php echo esc_attr( $field ); ?>" placeholder="https://" value="<?php echo esc_url( $band ? (string) musikstaden_get_field( $field, $band_id ) : '' ); ?>">
 								</div>
 							<?php endforeach; ?>
-						</fieldset>
+						</div>
 
 						<div class="band-studio__actions">
 							<button type="submit" name="studio_intent" value="draft" class="btn btn--outline">
