@@ -442,7 +442,8 @@ a:hover { color: var(--text); }
   width: 100%;
   min-height: clamp(320px, 58vh, 560px);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   margin-bottom: 2rem;
 }
@@ -472,8 +473,7 @@ a:hover { color: var(--text); }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, rgba(5, 5, 5, 0.95) 0%, rgba(5, 5, 5, 0.55) 38%, rgba(5, 5, 5, 0.15) 100%),
-    linear-gradient(to right, rgba(5, 5, 5, 0.35), transparent 55%);
+    linear-gradient(to top, rgba(5, 5, 5, 0.85) 0%, rgba(5, 5, 5, 0.45) 45%, rgba(5, 5, 5, 0.35) 100%);
   pointer-events: none;
 }
 
@@ -504,7 +504,8 @@ a:hover { color: var(--text); }
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 2.5rem 0 2.75rem;
+  padding: 2.5rem 0;
+  text-align: center;
 }
 
 .band-hero-full__label {
@@ -520,8 +521,8 @@ a:hover { color: var(--text); }
   font-size: clamp(2.25rem, 6vw, 4rem);
   font-weight: 700;
   line-height: 1.05;
-  margin: 0 0 1.25rem;
-  max-width: 14ch;
+  margin: 0 auto 1.25rem;
+  max-width: 18ch;
   text-shadow: 0 4px 32px rgba(0, 0, 0, 0.65);
 }
 
@@ -529,6 +530,7 @@ a:hover { color: var(--text); }
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
+  justify-content: center;
 }
 
 .band-hero-full__tags .tag {
@@ -1020,7 +1022,6 @@ a:hover { color: var(--text); }
 @media (max-width: 900px) {
   .band-page__layout { grid-template-columns: 1fr; }
   .band-page__sidebar { position: static; }
-  .band-hero-full__title { max-width: none; }
   .site-nav { justify-content: flex-end; }
 }
 
