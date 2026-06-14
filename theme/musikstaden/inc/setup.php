@@ -42,7 +42,7 @@ function musikstaden_setup(): void {
 	add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
 
 	add_image_size( 'band-card', 400, 300, true );
-	add_image_size( 'band-hero', 1200, 600, true );
+	add_image_size( 'band-hero', 1920, 900, true );
 
 	register_nav_menus(
 		array(

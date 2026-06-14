@@ -11,6 +11,8 @@
   --purple-bright: #a855f7;
   --purple-muted: #6d28d9;
   --green: #22c55e;
+  --orange: #f97316;
+  --orange-bright: #fb923c;
   --text: #f5f5f5;
   --text-muted: #a78bfa;
   --text-dim: #6b7280;
@@ -426,15 +428,264 @@ a:hover { color: var(--text); }
 .search-page__empty { color: var(--text-dim); }
 
 /* Band page */
-.band-page { padding: 2rem 0 4rem; }
+.band-page { padding: 0 0 4rem; }
+
+/* Full-width hero */
+.band-hero-full {
+  position: relative;
+  width: 100%;
+  min-height: clamp(320px, 58vh, 560px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.band-hero-full__media {
+  position: absolute;
+  inset: 0;
+}
+
+.band-hero-full__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.band-hero-full__placeholder {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.35), transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.25), transparent 40%),
+    linear-gradient(135deg, #1a1025 0%, #0a0a0f 50%, #1a1025 100%);
+}
+
+.band-hero-full__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(5, 5, 5, 0.95) 0%, rgba(5, 5, 5, 0.55) 38%, rgba(5, 5, 5, 0.15) 100%),
+    linear-gradient(to right, rgba(5, 5, 5, 0.35), transparent 55%);
+  pointer-events: none;
+}
+
+.band-hero-full__glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.band-hero-full__glow--left {
+  left: -120px;
+  bottom: -80px;
+  background: var(--purple-muted);
+}
+
+.band-hero-full__glow--right {
+  right: -100px;
+  top: -60px;
+  background: var(--orange);
+  opacity: 0.22;
+}
+
+.band-hero-full__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 2.5rem 0 2.75rem;
+}
+
+.band-hero-full__label {
+  color: var(--purple-bright);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.band-hero-full__title {
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0 0 1.25rem;
+  max-width: 14ch;
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.65);
+}
+
+.band-hero-full__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.band-hero-full__tags .tag {
+  margin: 0;
+  font-size: 0.68rem;
+  padding: 0.35rem 0.65rem;
+}
+
+.band-page .tag--gig_type {
+  border-color: var(--orange);
+  color: var(--orange-bright);
+  background: rgba(249, 115, 22, 0.12);
+}
 
 .band-page__layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 2.5rem;
   align-items: start;
 }
 
+.band-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.band-section--lead {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.band-section h2 { margin: 0 0 0.75rem; font-size: 1.35rem; }
+
+.band-section__sub {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.band-page__footer {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.band-footer-block {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(26, 16, 37, 0.65);
+  overflow: hidden;
+}
+
+.band-footer-block__title {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.band-footer-block--social {
+  padding: 1.25rem 1.35rem;
+}
+
+.band-booking__toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.15rem 1.35rem;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.band-booking__toggle:hover,
+.band-booking__toggle[aria-expanded="true"] {
+  background: rgba(139, 92, 246, 0.12);
+}
+
+.band-booking__toggle-label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.band-booking__toggle-hint {
+  flex: 1;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}
+
+.band-booking__toggle-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.band-booking__toggle-icon::before,
+.band-booking__toggle-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 2px;
+  background: var(--purple-bright);
+  transform: translate(-50%, -50%);
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.band-booking__toggle-icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.band-booking__toggle[aria-expanded="true"] .band-booking__toggle-icon::after {
+  transform: translate(-50%, -50%) rotate(90deg) scaleX(0);
+  opacity: 0;
+}
+
+.band-booking__panel {
+  padding: 0 1.35rem 1.35rem;
+  border-top: 1px solid var(--border);
+}
+
+.band-booking__panel[hidden] {
+  display: none;
+}
+
+.band-booking__intro {
+  margin: 1rem 0 1.25rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.social-links--footer {
+  margin: 0;
+}
+
+.band-page__sidebar {
+  position: sticky;
+  top: 1.25rem;
+}
+
+.similar-artists__sub {
+  margin: -0.5rem 0 1rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* Legacy band hero (unused) */
 .band-hero {
   border-radius: var(--radius);
   overflow: hidden;
@@ -465,20 +716,6 @@ a:hover { color: var(--text); }
 
 .band-header__title {
   font-size: clamp(2rem, 4vw, 3rem);
-  margin: 0 0 1rem;
-}
-
-.band-section {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border);
-}
-
-.band-section h2 { margin: 0 0 0.25rem; font-size: 1.35rem; }
-
-.band-section__sub {
-  color: var(--text-dim);
-  font-size: 0.9rem;
   margin: 0 0 1rem;
 }
 
@@ -782,6 +1019,8 @@ a:hover { color: var(--text); }
 /* Responsive */
 @media (max-width: 900px) {
   .band-page__layout { grid-template-columns: 1fr; }
+  .band-page__sidebar { position: static; }
+  .band-hero-full__title { max-width: none; }
   .site-nav { justify-content: flex-end; }
 }
 

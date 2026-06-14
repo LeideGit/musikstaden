@@ -4,6 +4,7 @@ When you upload a new zip, check **Appearance → Themes** — the version numbe
 
 | Version | Name | Changes |
 |---------|------|---------|
+| 1.0.18 | Band Page Hero | Full-width band hero, collapsible booking, sidebar similar artists with genre fallback |
 | 1.0.17 | Booking Email | Inquiries go to band booking email; Reply-To routes artist replies to the booker |
 | 1.0.16 | Booking Form | Secure booking inquiry form on band pages; artist email stays private |
 | 1.0.15 | Booking Info | Optional booking contact field (email or phone) on band profiles |

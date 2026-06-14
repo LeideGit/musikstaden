@@ -269,53 +269,73 @@ function musikstaden_render_booking_form( int $band_id ): void {
 
 	$band_email = musikstaden_get_band_booking_email( $band_id );
 	$status     = sanitize_text_field( wp_unslash( $_GET['booking'] ?? '' ) );
+	$expanded   = in_array( $status, array( 'success', 'error', 'rate', 'unavailable' ), true );
 	?>
-	<section id="booking" class="band-section">
-		<h2><?php ms_e( 'band.booking', 'Bokning' ); ?></h2>
-		<p class="band-section__sub"><?php ms_e( 'band.booking_sub', 'Skicka en bokningsförfrågan — artistens kontaktuppgifter visas inte publikt.' ); ?></p>
+	<section id="booking" class="band-footer-block band-booking">
+		<button
+			type="button"
+			class="band-booking__toggle"
+			aria-expanded="<?php echo $expanded ? 'true' : 'false'; ?>"
+			aria-controls="booking-panel"
+			id="booking-toggle"
+		>
+			<span class="band-booking__toggle-label"><?php ms_e( 'band.booking', 'Bokning' ); ?></span>
+			<span class="band-booking__toggle-hint"><?php ms_e( 'booking.toggle_hint', 'Skicka bokningsförfrågan' ); ?></span>
+			<span class="band-booking__toggle-icon" aria-hidden="true"></span>
+		</button>
 
-		<?php if ( 'success' === $status ) : ?>
-			<div class="notice notice-success"><?php ms_e( 'booking.success', 'Din förfrågan har skickats! Artisten återkommer via e-post.' ); ?></div>
-		<?php elseif ( 'error' === $status ) : ?>
-			<div class="notice notice-error"><?php ms_e( 'booking.error', 'Kunde inte skicka förfrågan. Kontrollera fälten och försök igen.' ); ?></div>
-		<?php elseif ( 'rate' === $status ) : ?>
-			<div class="notice notice-error"><?php ms_e( 'booking.rate', 'För många förfrågningar. Vänta en stund och försök igen.' ); ?></div>
-		<?php elseif ( 'unavailable' === $status ) : ?>
-			<div class="notice notice-error"><?php ms_e( 'booking.unavailable', 'Bokningsförfrågningar är inte tillgängliga för den här artisten just nu.' ); ?></div>
-		<?php endif; ?>
+		<div
+			id="booking-panel"
+			class="band-booking__panel"
+			role="region"
+			aria-labelledby="booking-toggle"
+			<?php echo $expanded ? '' : 'hidden'; ?>
+		>
+			<p class="band-booking__intro"><?php ms_e( 'band.booking_sub', 'Skicka en bokningsförfrågan — artistens kontaktuppgifter visas inte publikt.' ); ?></p>
 
-		<?php if ( ! $band_email ) : ?>
-			<p class="booking-form__unavailable"><?php ms_e( 'booking.closed', 'Bokningsförfrågningar är inte tillgängliga för den här artisten just nu.' ); ?></p>
-		<?php else : ?>
-			<form class="booking-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-				<?php wp_nonce_field( 'musikstaden_booking_' . $band_id, 'musikstaden_booking_nonce' ); ?>
-				<input type="hidden" name="action" value="musikstaden_booking_inquiry">
-				<input type="hidden" name="band_id" value="<?php echo esc_attr( (string) $band_id ); ?>">
+			<?php if ( 'success' === $status ) : ?>
+				<div class="notice notice-success"><?php ms_e( 'booking.success', 'Din förfrågan har skickats! Artisten svarar till din e-postadress.' ); ?></div>
+			<?php elseif ( 'error' === $status ) : ?>
+				<div class="notice notice-error"><?php ms_e( 'booking.error', 'Kunde inte skicka förfrågan. Kontrollera fälten och försök igen.' ); ?></div>
+			<?php elseif ( 'rate' === $status ) : ?>
+				<div class="notice notice-error"><?php ms_e( 'booking.rate', 'För många förfrågningar. Vänta en stund och försök igen.' ); ?></div>
+			<?php elseif ( 'unavailable' === $status ) : ?>
+				<div class="notice notice-error"><?php ms_e( 'booking.unavailable', 'Bokningsförfrågningar är inte tillgängliga för den här artisten just nu.' ); ?></div>
+			<?php endif; ?>
 
-				<div class="form-row booking-form__honeypot" aria-hidden="true">
-					<label for="inquiry_website"><?php esc_html_e( 'Website', 'musikstaden' ); ?></label>
-					<input type="text" id="inquiry_website" name="inquiry_website" tabindex="-1" autocomplete="off">
-				</div>
+			<?php if ( ! $band_email ) : ?>
+				<p class="booking-form__unavailable"><?php ms_e( 'booking.closed', 'Bokningsförfrågningar är inte tillgängliga för den här artisten just nu.' ); ?></p>
+			<?php else : ?>
+				<form class="booking-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<?php wp_nonce_field( 'musikstaden_booking_' . $band_id, 'musikstaden_booking_nonce' ); ?>
+					<input type="hidden" name="action" value="musikstaden_booking_inquiry">
+					<input type="hidden" name="band_id" value="<?php echo esc_attr( (string) $band_id ); ?>">
 
-				<div class="form-row">
-					<label for="inquiry_name"><?php ms_e( 'booking.name', 'Ditt namn' ); ?> *</label>
-					<input type="text" id="inquiry_name" name="inquiry_name" required maxlength="120" autocomplete="name">
-				</div>
-				<div class="form-row">
-					<label for="inquiry_email"><?php ms_e( 'booking.email', 'Din e-post' ); ?> *</label>
-					<input type="email" id="inquiry_email" name="inquiry_email" required maxlength="120" autocomplete="email">
-				</div>
-				<div class="form-row">
-					<label for="inquiry_event"><?php ms_e( 'booking.event', 'Event / datum' ); ?></label>
-					<input type="text" id="inquiry_event" name="inquiry_event" maxlength="160" placeholder="<?php echo esc_attr( ms__( 'booking.event_placeholder', 't.ex. Bröllop 15 augusti, Stockholm' ) ); ?>">
-				</div>
-				<div class="form-row">
-					<label for="inquiry_message"><?php ms_e( 'booking.message', 'Meddelande' ); ?> *</label>
-					<textarea id="inquiry_message" name="inquiry_message" rows="5" required maxlength="2000"></textarea>
-				</div>
-				<button type="submit" class="btn btn--primary btn--glow"><?php ms_e( 'booking.submit', 'Skicka bokningsförfrågan' ); ?></button>
-			</form>
-		<?php endif; ?>
+					<div class="form-row booking-form__honeypot" aria-hidden="true">
+						<label for="inquiry_website"><?php esc_html_e( 'Website', 'musikstaden' ); ?></label>
+						<input type="text" id="inquiry_website" name="inquiry_website" tabindex="-1" autocomplete="off">
+					</div>
+
+					<div class="form-row">
+						<label for="inquiry_name"><?php ms_e( 'booking.name', 'Ditt namn' ); ?> *</label>
+						<input type="text" id="inquiry_name" name="inquiry_name" required maxlength="120" autocomplete="name">
+					</div>
+					<div class="form-row">
+						<label for="inquiry_email"><?php ms_e( 'booking.email', 'Din e-post' ); ?> *</label>
+						<input type="email" id="inquiry_email" name="inquiry_email" required maxlength="120" autocomplete="email">
+					</div>
+					<div class="form-row">
+						<label for="inquiry_event"><?php ms_e( 'booking.event', 'Event / datum' ); ?></label>
+						<input type="text" id="inquiry_event" name="inquiry_event" maxlength="160" placeholder="<?php echo esc_attr( ms__( 'booking.event_placeholder', 't.ex. Bröllop 15 augusti, Stockholm' ) ); ?>">
+					</div>
+					<div class="form-row">
+						<label for="inquiry_message"><?php ms_e( 'booking.message', 'Meddelande' ); ?> *</label>
+						<textarea id="inquiry_message" name="inquiry_message" rows="5" required maxlength="2000"></textarea>
+					</div>
+					<button type="submit" class="btn btn--primary btn--glow"><?php ms_e( 'booking.submit', 'Skicka bokningsförfrågan' ); ?></button>
+				</form>
+			<?php endif; ?>
+		</div>
 	</section>
 	<?php
 }
