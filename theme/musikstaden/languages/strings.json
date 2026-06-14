@@ -1,5 +1,6 @@
 {
   "nav.for_artists": { "sv": "För artister", "en": "For Artists" },
+  "nav.apply": { "sv": "Ansök", "en": "Apply" },
   "nav.for_venues": { "sv": "För spelställen", "en": "For Venues" },
   "nav.login": { "sv": "Logga in", "en": "Log in" },
   "nav.dashboard": { "sv": "Min panel", "en": "Dashboard" },
@@ -7,6 +8,7 @@
   "hero.title": { "sv": "Hitta rätt lokal artist för din stad och ditt event", "en": "Find the right local artist for your city and event" },
   "hero.title_highlight_1": { "sv": "lokal artist", "en": "local artist" },
   "hero.title_highlight_2": { "sv": "din stad och ditt event", "en": "your city and event" },
+  "hero.subtitle": { "sv": "Upptäck lokala band och artister — sök efter stad, event och genre.", "en": "Discover local bands and artists — search by city, event, and genre." },
   "search.city": { "sv": "Stad", "en": "City" },
   "search.event": { "sv": "Eventtyp", "en": "Event Type" },
   "search.genre": { "sv": "Genre", "en": "Genre" },

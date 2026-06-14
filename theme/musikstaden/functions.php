@@ -11,7 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MUSIKSTADEN_VERSION', '1.0.0' );
+require_once __DIR__ . '/inc/version.php';
+
 define( 'MUSIKSTADEN_DIR', get_template_directory() );
 define( 'MUSIKSTADEN_URI', get_template_directory_uri() );
 define( 'MUSIKSTADEN_MAX_BANDS', 5 );

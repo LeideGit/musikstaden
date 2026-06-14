@@ -47,13 +47,13 @@ function musikstaden_detect_embed_platform( string $url ): string {
 	$host = wp_parse_url( $url, PHP_URL_HOST ) ?? '';
 	$host = strtolower( (string) $host );
 
-	if ( str_contains( $host, 'youtube.com' ) || str_contains( $host, 'youtu.be' ) ) {
+	if ( false !== strpos( $host, 'youtube.com' ) || false !== strpos( $host, 'youtu.be' ) ) {
 		return 'youtube';
 	}
-	if ( str_contains( $host, 'soundcloud.com' ) ) {
+	if ( false !== strpos( $host, 'soundcloud.com' ) ) {
 		return 'soundcloud';
 	}
-	if ( str_contains( $host, 'spotify.com' ) ) {
+	if ( false !== strpos( $host, 'spotify.com' ) ) {
 		return 'spotify';
 	}
 	return 'unknown';

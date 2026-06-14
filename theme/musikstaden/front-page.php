@@ -6,25 +6,36 @@
  */
 
 get_header();
+
+$title = ms__( 'hero.title', 'Hitta rätt lokal artist för din stad och ditt event' );
+$h1    = ms__( 'hero.title_highlight_1', 'lokal artist' );
+$h2    = ms__( 'hero.title_highlight_2', 'din stad och ditt event' );
+$title_html = preg_replace(
+	array( '/(' . preg_quote( $h1, '/' ) . ')/iu', '/(' . preg_quote( $h2, '/' ) . ')/iu' ),
+	array( '<span class="hero-banner__highlight">$1</span>', '<span class="hero-banner__highlight">$1</span>' ),
+	esc_html( $title )
+);
 ?>
 
-<section class="hero">
-	<div class="container">
-		<h1 class="hero__title">
-			<?php
-			$title = ms__( 'hero.title', 'Find the right local artist for your city and event' );
-			$h1    = ms__( 'hero.title_highlight_1', 'local artist' );
-			$h2    = ms__( 'hero.title_highlight_2', 'your city and event' );
-			echo wp_kses_post(
-				preg_replace(
-					array( '/(' . preg_quote( $h1, '/' ) . ')/iu', '/(' . preg_quote( $h2, '/' ) . ')/iu' ),
-					array( '<span class="hero__highlight">$1</span>', '<span class="hero__highlight">$1</span>' ),
-					esc_html( $title )
-				)
-			);
-			?>
-		</h1>
-		<div class="search-box">
+<section class="hero-banner">
+	<div class="hero-banner__backdrop" aria-hidden="true"></div>
+	<div class="hero-banner__glow hero-banner__glow--left" aria-hidden="true"></div>
+	<div class="hero-banner__glow hero-banner__glow--right" aria-hidden="true"></div>
+
+	<div class="container hero-banner__content">
+		<img
+			class="hero-banner__logo"
+			src="<?php echo esc_url( MUSIKSTADEN_URI . '/assets/images/logo.png' ); ?>"
+			alt="<?php bloginfo( 'name' ); ?>"
+			width="320"
+			height="120"
+		>
+		<h1 class="hero-banner__title"><?php echo wp_kses_post( $title_html ); ?></h1>
+		<p class="hero-banner__subtitle"><?php ms_e( 'hero.subtitle', 'Upptäck lokala band och artister — sök efter stad, event och genre.' ); ?></p>
+	</div>
+
+	<div class="container hero-banner__search">
+		<div class="search-box search-box--hero">
 			<?php
 			$action = home_url( '/sok/' );
 			include locate_template( 'template-parts/search-form.php' );
@@ -37,8 +48,8 @@ get_header();
 
 <section class="featured section">
 	<div class="container">
-		<h2 class="section__title"><?php ms_e( 'featured.title', 'Featured Artists' ); ?></h2>
-		<p class="section__subtitle"><?php ms_e( 'featured.subtitle', 'Artists available in Stockholm' ); ?></p>
+		<h2 class="section__title"><?php ms_e( 'featured.title', 'Utvalda artister' ); ?></h2>
+		<p class="section__subtitle"><?php ms_e( 'featured.subtitle', 'Artister tillgängliga i Stockholm' ); ?></p>
 		<div class="artist-grid">
 			<?php
 			$featured = new WP_Query(
@@ -78,7 +89,7 @@ get_header();
 			?>
 		</div>
 		<div class="section__actions">
-			<a href="<?php echo esc_url( home_url( '/sok/' ) ); ?>" class="btn btn--outline"><?php ms_e( 'featured.more', 'VIEW MORE ARTISTS' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/sok/' ) ); ?>" class="btn btn--outline"><?php ms_e( 'featured.more', 'VISA FLER ARTISTER' ); ?></a>
 		</div>
 	</div>
 </section>

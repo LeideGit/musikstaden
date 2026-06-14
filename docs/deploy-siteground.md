@@ -47,9 +47,12 @@ In WP Admin → **Plugins → Add New**, install and activate:
 
 ### Option B: ZIP upload
 
-1. Zip the `theme/musikstaden/` folder locally
+1. Zip the `theme/musikstaden/` folder locally (name it e.g. `musikstaden-1.0.1.zip`)
 2. WP Admin → **Appearance → Themes → Add New → Upload Theme**
 3. Upload the zip and activate **Musikstaden**
+4. Confirm version on **Appearance → Themes** (e.g. **1.0.1 — Approval Fix**)
+
+Version is set in `inc/version.php`. See `CHANGELOG.md` in the theme folder for release history.
 
 ## 5. Activate theme and flush permalinks
 

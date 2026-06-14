@@ -9,9 +9,26 @@ declare(strict_types=1);
 
 add_action( 'after_setup_theme', 'musikstaden_setup' );
 add_action( 'wp_enqueue_scripts', 'musikstaden_enqueue_assets' );
+add_filter( 'locale', 'musikstaden_frontend_locale' );
 add_action( 'init', 'musikstaden_register_rewrites' );
 add_filter( 'query_vars', 'musikstaden_query_vars' );
 add_action( 'widgets_init', 'musikstaden_register_ad_areas' );
+
+/**
+ * Use WordPress site language on the public site (Swedish by default in Settings).
+ */
+function musikstaden_frontend_locale( string $locale ): string {
+	if ( is_admin() ) {
+		return $locale;
+	}
+
+	$wp_locale = get_option( 'WPLANG' );
+	if ( is_string( $wp_locale ) && $wp_locale !== '' ) {
+		return $wp_locale;
+	}
+
+	return $locale ?: 'sv_SE';
+}
 
 /**
  * Theme supports and menus.

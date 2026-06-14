@@ -8,6 +8,103 @@
 declare(strict_types=1);
 
 add_action( 'admin_notices', 'musikstaden_acf_notice' );
+add_action( 'admin_notices', 'musikstaden_application_admin_notices' );
+add_action( 'admin_notices', 'musikstaden_band_admin_notices' );
+add_filter( 'theme_row_meta', 'musikstaden_theme_row_meta', 10, 3 );
+add_filter( 'admin_footer_text', 'musikstaden_admin_footer_version' );
+
+/**
+ * Show release name under the theme on Appearance → Themes.
+ *
+ * @param string[] $links Row meta links.
+ */
+function musikstaden_theme_row_meta( array $links, string $stylesheet, $theme ): array {
+	if ( 'musikstaden' !== $stylesheet ) {
+		return $links;
+	}
+
+	$links[] = sprintf(
+		'<strong>%s</strong> <code>%s</code>',
+		esc_html( MUSIKSTADEN_VERSION_NAME ),
+		esc_html( MUSIKSTADEN_VERSION )
+	);
+
+	return $links;
+}
+
+/**
+ * Show active theme version in WP Admin footer (admins only).
+ */
+function musikstaden_admin_footer_version( string $text ): string {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return $text;
+	}
+
+	$active = wp_get_theme();
+	if ( 'musikstaden' !== $active->get_stylesheet() ) {
+		return $text;
+	}
+
+	return sprintf(
+		/* translators: %s: theme version label */
+		__( 'Musikstaden theme %s', 'musikstaden' ),
+		musikstaden_version_label()
+	);
+}
+
+/**
+ * Notices on the Bands list after creating from an application.
+ */
+function musikstaden_band_admin_notices(): void {
+	if ( empty( $_GET['band_created'] ) ) {
+		return;
+	}
+
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || 'edit-band' !== $screen->id ) {
+		return;
+	}
+
+	$band_id = (int) ( $_GET['band_id'] ?? 0 );
+	$message = __( 'Band created as a draft. Open it, add details, then click Publish.', 'musikstaden' );
+	if ( $band_id ) {
+		$message .= ' <a href="' . esc_url( get_edit_post_link( $band_id ) ) . '">' . esc_html__( 'Edit band now', 'musikstaden' ) . '</a>';
+	}
+
+	echo '<div class="notice notice-success is-dismissible"><p>' . wp_kses_post( $message ) . '</p></div>';
+}
+
+/**
+ * Show feedback after approve/reject actions.
+ */
+function musikstaden_application_admin_notices(): void {
+	if ( ! empty( $_GET['approved'] ) ) {
+		$band_id = (int) ( $_GET['band_id'] ?? 0 );
+		$message = __( 'Application approved. User account created.', 'musikstaden' );
+		if ( $band_id ) {
+			$message .= ' ';
+			$message .= sprintf(
+				/* translators: %s: edit band link */
+				__( 'Draft band created: %s', 'musikstaden' ),
+				'<a href="' . esc_url( get_edit_post_link( $band_id ) ) . '">' . esc_html( get_the_title( $band_id ) ) . '</a>'
+			);
+		}
+		echo '<div class="notice notice-success is-dismissible"><p>' . wp_kses_post( $message ) . '</p></div>';
+	}
+	if ( ! empty( $_GET['rejected'] ) ) {
+		echo '<div class="notice notice-info is-dismissible"><p>' . esc_html__( 'Application rejected.', 'musikstaden' ) . '</p></div>';
+	}
+	if ( isset( $_GET['email_resent'] ) ) {
+		$sent = '1' === $_GET['email_resent'];
+		echo '<div class="notice notice-' . ( $sent ? 'success' : 'error' ) . ' is-dismissible"><p>';
+		echo esc_html(
+			$sent
+				? __( 'Welcome email sent.', 'musikstaden' )
+				: __( 'Could not send welcome email. Check WP Mail SMTP.', 'musikstaden' )
+		);
+		echo '</p></div>';
+	}
+}
 
 /**
  * Prompt to install ACF if missing.

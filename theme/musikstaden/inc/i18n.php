@@ -31,11 +31,10 @@ function musikstaden_handle_lang_switch(): void {
 }
 
 /**
- * Get current language code.
+ * Get current language code (Swedish is the site default).
  */
 function musikstaden_get_lang(): string {
-	$lang = $_COOKIE[ MUSIKSTADEN_LANG_COOKIE ] ?? 'sv';
-	return in_array( $lang, array( 'sv', 'en' ), true ) ? $lang : 'sv';
+	return 'sv';
 }
 
 /**
