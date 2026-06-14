@@ -521,9 +521,10 @@ a:hover { color: var(--text); }
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.92) 0%,
-    rgba(0, 0, 0, 0.72) 28%,
-    rgba(0, 0, 0, 0.35) 55%,
+    rgba(0, 0, 0, 0.97) 0%,
+    rgba(0, 0, 0, 0.88) 22%,
+    rgba(0, 0, 0, 0.62) 48%,
+    rgba(0, 0, 0, 0.2) 72%,
     transparent 100%
   );
   pointer-events: none;
