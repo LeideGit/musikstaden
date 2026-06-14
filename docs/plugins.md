@@ -4,7 +4,7 @@ Install from WP Admin → Plugins → Add New.
 
 ## Required
 
-- **Advanced Custom Fields** — band biography, embeds, social URL fields (registered automatically by theme)
+- **Advanced Custom Fields** (free) — band biography, media embeds, social URL fields (registered automatically by theme; ACF Pro is not required)
 
 ## Recommended
 

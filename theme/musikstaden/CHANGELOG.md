@@ -4,6 +4,15 @@ When you upload a new zip, check **Appearance → Themes** — the version numbe
 
 | Version | Name | Changes |
 |---------|------|---------|
+| 1.0.17 | Booking Email | Inquiries go to band booking email; Reply-To routes artist replies to the booker |
+| 1.0.16 | Booking Form | Secure booking inquiry form on band pages; artist email stays private |
+| 1.0.15 | Booking Info | Optional booking contact field (email or phone) on band profiles |
+| 1.0.14 | Remove Event Types | Delete unused event_type taxonomy and obsolete booking terms from database |
+| 1.0.13 | Merge Booking Types | Remove event_type; use gig_type (Bokningstyp) for search and band tags |
+| 1.0.12 | Split Embed Fields | Separate Spotify and YouTube embed fields in band editor |
+| 1.0.11 | Social Icons | Recognizable YouTube, Spotify, Instagram, Facebook and website icons on band pages |
+| 1.0.10 | Embed Textarea Fix | Replace ACF Pro repeater with textarea for Spotify/YouTube paste (free ACF) |
+| 1.0.9 | Media Embeds | Paste Spotify/YouTube embed code or links on band profiles |
 | 1.0.8 | Homepage Hero | Minimal header (logo, Ansök, Logga in); Swedish default; hero banner with logo and search |
 | 1.0.7 | Approval Email Link | Always include wp-login password reset link in approval email |
 | 1.0.6 | Critical Error Fix | Merge welcome email into applications.php; PHP 7.4 compatibility; safer admin types |

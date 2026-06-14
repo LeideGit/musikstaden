@@ -10,8 +10,8 @@
 
 declare(strict_types=1);
 
-define( 'MUSIKSTADEN_VERSION', '1.0.8' );
-define( 'MUSIKSTADEN_VERSION_NAME', 'Homepage Hero' );
+define( 'MUSIKSTADEN_VERSION', '1.0.17' );
+define( 'MUSIKSTADEN_VERSION_NAME', 'Booking Email' );
 
 /**
  * Full version label for display, e.g. "1.0.1 — Approval Fix".

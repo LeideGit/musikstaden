@@ -68,7 +68,7 @@ https://musikstaden.se/wp-admin/?musikstaden_seed=1
 ```
 
 This creates:
-- Cities, genres, event types, gig types
+- Cities, genres, booking types (Bokningstyp)
 - 12 demo band pages
 - Required pages (dashboard, login, for-artists, privacy, cookies)
 
@@ -117,15 +117,17 @@ Use this to share design previews; real functionality requires WordPress on Site
 1. Edit files locally in `theme/musikstaden/`
 2. Upload changed files via SFTP (overwrite), or re-zip and upload
 3. No need to deactivate theme for CSS/PHP updates
+4. **Purge cache** after every theme upload (see Troubleshooting below)
 
 ## Troubleshooting
 
 | Problem | Fix |
 |---------|-----|
+| Homepage blank but `/sok/` works | SiteGround cached an empty homepage. Site Tools → **Speed → Caching** → **Flush Dynamic Cache** (or WP Admin → **Speed Optimizer → Caching → Purge SG Cache**). Then reload `https://musikstaden.se/` |
 | `/artist/name` 404 | Settings → Permalinks → Save again |
 | Band fields missing | Install Advanced Custom Fields plugin |
 | Login says "pending approval" | WP Admin → Users → edit user → ensure approved; or use Applications approve button |
-| Embeds not showing | Paste full YouTube/Spotify/SoundCloud URLs in band editor |
+| Embeds not showing | Paste Spotify/YouTube embed code (Share → Embed) or a direct link in **Musik & video** |
 | White screen | Enable WP_DEBUG in wp-config.php temporarily; check PHP 8.0+ |
 
 ## Security checklist

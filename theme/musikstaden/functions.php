@@ -23,6 +23,7 @@ require_once MUSIKSTADEN_DIR . '/inc/cpt.php';
 require_once MUSIKSTADEN_DIR . '/inc/taxonomies.php';
 require_once MUSIKSTADEN_DIR . '/inc/acf-fields.php';
 require_once MUSIKSTADEN_DIR . '/inc/band-membership.php';
+require_once MUSIKSTADEN_DIR . '/inc/booking-inquiry.php';
 require_once MUSIKSTADEN_DIR . '/inc/similar-artists.php';
 require_once MUSIKSTADEN_DIR . '/inc/applications.php';
 require_once MUSIKSTADEN_DIR . '/inc/invites.php';

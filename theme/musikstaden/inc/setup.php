@@ -107,7 +107,6 @@ function musikstaden_register_rewrites(): void {
  */
 function musikstaden_query_vars( array $vars ): array {
 	$vars[] = 'ms_city';
-	$vars[] = 'ms_event';
 	$vars[] = 'ms_genre';
 	$vars[] = 'ms_invite';
 	return $vars;
@@ -143,6 +142,20 @@ function musikstaden_register_ad_areas(): void {
 }
 
 /**
- * Flush rewrites on theme switch.
+ * Flush rewrites and purge SiteGround cache on theme switch.
  */
 add_action( 'after_switch_theme', 'flush_rewrite_rules' );
+add_action( 'after_switch_theme', 'musikstaden_purge_host_cache' );
+
+/**
+ * Purge SiteGround Speed Optimizer cache after theme updates.
+ */
+function musikstaden_purge_host_cache(): void {
+	if ( function_exists( 'sg_cachepress_purge_cache' ) ) {
+		sg_cachepress_purge_cache();
+		return;
+	}
+	if ( function_exists( 'sg_cachepress_purge_everything' ) ) {
+		sg_cachepress_purge_everything();
+	}
+}

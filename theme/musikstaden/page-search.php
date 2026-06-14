@@ -9,7 +9,7 @@ get_header();
 
 $query   = new WP_Query( musikstaden_band_query_args() );
 $count   = $query->found_posts;
-$has_filters = ! empty( $_GET['city'] ) || ! empty( $_GET['event'] ) || ! empty( $_GET['genre'] );
+$has_filters = ! empty( $_GET['city'] ) || ! empty( $_GET['gig'] ) || ! empty( $_GET['genre'] );
 ?>
 
 <section class="search-page section">

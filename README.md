@@ -2,7 +2,7 @@
 
 Local music discovery platform for Sweden — find artists and bands in your city.
 
-**Current version:** 1.0.8 (see [VERSION](VERSION) and `theme/musikstaden/CHANGELOG.md`)
+**Current version:** 1.0.9 (see [VERSION](VERSION) and `theme/musikstaden/CHANGELOG.md`)
 
 ## Repository structure
 

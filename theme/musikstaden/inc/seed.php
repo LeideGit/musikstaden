@@ -30,7 +30,7 @@ function musikstaden_maybe_run_seed(): void {
 }
 
 /**
- * Seed cities, genres, event types, gig types.
+ * Seed cities, genres, and booking types (gig_type).
  */
 function musikstaden_seed_taxonomies(): void {
 	$cities = array( 'Stockholm', 'Göteborg', 'Malmö', 'Uppsala', 'Linköping', 'Örebro', 'Västerås', 'Umeå', 'Luleå', 'Gävle' );
@@ -47,19 +47,7 @@ function musikstaden_seed_taxonomies(): void {
 		}
 	}
 
-	$events = array( 'Club', 'Wedding', 'Corporate', 'Festival', 'Private Party', 'Restaurant' );
-	foreach ( $events as $event ) {
-		if ( ! term_exists( $event, 'event_type' ) ) {
-			wp_insert_term( $event, 'event_type', array( 'slug' => sanitize_title( $event ) ) );
-		}
-	}
-
-	$gigs = array( 'Weddings', 'Corporate', 'Private Events', 'Festivals', 'Club Gigs' );
-	foreach ( $gigs as $gig ) {
-		if ( ! term_exists( $gig, 'gig_type' ) ) {
-			wp_insert_term( $gig, 'gig_type', array( 'slug' => sanitize_title( $gig ) ) );
-		}
-	}
+	musikstaden_seed_booking_types();
 }
 
 /**
@@ -67,18 +55,18 @@ function musikstaden_seed_taxonomies(): void {
  */
 function musikstaden_seed_bands(): void {
 	$bands = array(
-		array( 'name' => 'Luna Andersson', 'city' => 'stockholm', 'genres' => array( 'jazz', 'soul' ), 'events' => array( 'wedding', 'corporate' ), 'gigs' => array( 'weddings', 'corporate' ), 'bio' => 'Prisbelönt jazzsångerska baserad i Stockholm. Luna blandar klassisk jazz med modern soul.' ),
-		array( 'name' => 'The Northern Lights', 'city' => 'stockholm', 'genres' => array( 'rock', 'indie' ), 'events' => array( 'club', 'festival' ), 'gigs' => array( 'club-gigs', 'festivals' ), 'bio' => 'Energisk rockkvartett med norrländska rötter och arena-ready refränger.' ),
-		array( 'name' => 'Sofia Nilsson', 'city' => 'stockholm', 'genres' => array( 'classical', 'jazz' ), 'events' => array( 'wedding', 'corporate' ), 'gigs' => array( 'weddings', 'private-events' ), 'bio' => 'Prisbelönt violinist som specialiserar sig på klassiska bröllop och företagsevent.' ),
-		array( 'name' => 'Echo Chamber', 'city' => 'goteborg', 'genres' => array( 'electronic', 'indie' ), 'events' => array( 'club', 'festival' ), 'gigs' => array( 'club-gigs' ), 'bio' => 'Elektroniskt duo från Göteborg med drömsk ambient och dansgolvshits.' ),
-		array( 'name' => 'Malmö Soul Collective', 'city' => 'malmo', 'genres' => array( 'soul', 'jazz' ), 'events' => array( 'club', 'restaurant' ), 'gigs' => array( 'club-gigs' ), 'bio' => 'Åtta personer stark soul-orkester med rötter i Skånes jazzscen.' ),
-		array( 'name' => 'Fjäderlight', 'city' => 'uppsala', 'genres' => array( 'folk', 'indie' ), 'events' => array( 'festival', 'private-party' ), 'gigs' => array( 'festivals', 'private-events' ), 'bio' => 'Akustisk folkduo med harmonier inspirerade av svensk vistradition.' ),
-		array( 'name' => 'Neon Harbor', 'city' => 'goteborg', 'genres' => array( 'pop', 'electronic' ), 'events' => array( 'club', 'corporate' ), 'gigs' => array( 'corporate', 'club-gigs' ), 'bio' => 'Synthpop-trio perfekt för företagsevent och klubbkvällar.' ),
-		array( 'name' => 'Ironwood', 'city' => 'orebro', 'genres' => array( 'metal', 'rock' ), 'events' => array( 'club', 'festival' ), 'gigs' => array( 'festivals', 'club-gigs' ), 'bio' => 'Tung rock från Örebro med melodiska hooks och mäktiga riff.' ),
-		array( 'name' => 'Blue Line Trio', 'city' => 'stockholm', 'genres' => array( 'blues', 'jazz' ), 'events' => array( 'restaurant', 'club' ), 'gigs' => array( 'club-gigs' ), 'bio' => 'Bluesjamtrio med decenniers erfarenhet av Stockholms scener.' ),
-		array( 'name' => 'Aurora Pulse', 'city' => 'lulea', 'genres' => array( 'electronic', 'pop' ), 'events' => array( 'festival', 'club' ), 'gigs' => array( 'festivals' ), 'bio' => 'Norrbottens svar på electropop — kallt klimat, varma syntar.' ),
-		array( 'name' => 'Kustlinjen', 'city' => 'gavle', 'genres' => array( 'reggae', 'folk' ), 'events' => array( 'festival', 'private-party' ), 'gigs' => array( 'festivals', 'private-events' ), 'bio' => 'Reggae-fusion med svenska texter och sommarvibe året om.' ),
-		array( 'name' => 'Västerås Beat Club', 'city' => 'vasteras', 'genres' => array( 'hip-hop', 'soul' ), 'events' => array( 'club', 'corporate' ), 'gigs' => array( 'club-gigs', 'corporate' ), 'bio' => 'Live hip-hop ensemble med hornsektion och soulful sång.' ),
+		array( 'name' => 'Luna Andersson', 'city' => 'stockholm', 'genres' => array( 'jazz', 'soul' ), 'gigs' => array( 'brollop', 'foretagsevent' ), 'bio' => 'Prisbelönt jazzsångerska baserad i Stockholm. Luna blandar klassisk jazz med modern soul.' ),
+		array( 'name' => 'The Northern Lights', 'city' => 'stockholm', 'genres' => array( 'rock', 'indie' ), 'gigs' => array( 'klubb-bar', 'festival' ), 'bio' => 'Energisk rockkvartett med norrländska rötter och arena-ready refränger.' ),
+		array( 'name' => 'Sofia Nilsson', 'city' => 'stockholm', 'genres' => array( 'classical', 'jazz' ), 'gigs' => array( 'brollop', 'privat-fest' ), 'bio' => 'Prisbelönt violinist som specialiserar sig på klassiska bröllop och företagsevent.' ),
+		array( 'name' => 'Echo Chamber', 'city' => 'goteborg', 'genres' => array( 'electronic', 'indie' ), 'gigs' => array( 'klubb-bar', 'festival' ), 'bio' => 'Elektroniskt duo från Göteborg med drömsk ambient och dansgolvshits.' ),
+		array( 'name' => 'Malmö Soul Collective', 'city' => 'malmo', 'genres' => array( 'soul', 'jazz' ), 'gigs' => array( 'klubb-bar', 'restaurang' ), 'bio' => 'Åtta personer stark soul-orkester med rötter i Skånes jazzscen.' ),
+		array( 'name' => 'Fjäderlight', 'city' => 'uppsala', 'genres' => array( 'folk', 'indie' ), 'gigs' => array( 'festival', 'privat-fest' ), 'bio' => 'Akustisk folkduo med harmonier inspirerade av svensk vistradition.' ),
+		array( 'name' => 'Neon Harbor', 'city' => 'goteborg', 'genres' => array( 'pop', 'electronic' ), 'gigs' => array( 'foretagsevent', 'klubb-bar' ), 'bio' => 'Synthpop-trio perfekt för företagsevent och klubbkvällar.' ),
+		array( 'name' => 'Ironwood', 'city' => 'orebro', 'genres' => array( 'metal', 'rock' ), 'gigs' => array( 'festival', 'klubb-bar' ), 'bio' => 'Tung rock från Örebro med melodiska hooks och mäktiga riff.' ),
+		array( 'name' => 'Blue Line Trio', 'city' => 'stockholm', 'genres' => array( 'blues', 'jazz' ), 'gigs' => array( 'restaurang', 'klubb-bar' ), 'bio' => 'Bluesjamtrio med decenniers erfarenhet av Stockholms scener.' ),
+		array( 'name' => 'Aurora Pulse', 'city' => 'lulea', 'genres' => array( 'electronic', 'pop' ), 'gigs' => array( 'festival', 'klubb-bar' ), 'bio' => 'Norrbottens svar på electropop — kallt klimat, varma syntar.' ),
+		array( 'name' => 'Kustlinjen', 'city' => 'gavle', 'genres' => array( 'reggae', 'folk' ), 'gigs' => array( 'festival', 'privat-fest' ), 'bio' => 'Reggae-fusion med svenska texter och sommarvibe året om.' ),
+		array( 'name' => 'Västerås Beat Club', 'city' => 'vasteras', 'genres' => array( 'hip-hop', 'soul' ), 'gigs' => array( 'klubb-bar', 'foretagsevent' ), 'bio' => 'Live hip-hop ensemble med hornsektion och soulful sång.' ),
 	);
 
 	$embeds = array(
@@ -108,12 +96,11 @@ function musikstaden_seed_bands(): void {
 
 		wp_set_object_terms( $post_id, $band['city'], 'city' );
 		wp_set_object_terms( $post_id, $band['genres'], 'genre' );
-		wp_set_object_terms( $post_id, $band['events'], 'event_type' );
 		wp_set_object_terms( $post_id, $band['gigs'], 'gig_type' );
 
 		if ( function_exists( 'update_field' ) ) {
 			update_field( 'biography', $band['bio'], $post_id );
-			update_field( 'embeds', array( array( 'url' => $embeds[0] ) ), $post_id );
+			update_field( 'embed_spotify', $embeds[0], $post_id );
 			update_field( 'social_spotify', 'https://open.spotify.com', $post_id );
 			update_field( 'social_instagram', 'https://instagram.com', $post_id );
 		} else {

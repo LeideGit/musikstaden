@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 add_action( 'admin_notices', 'musikstaden_acf_notice' );
+add_action( 'admin_notices', 'musikstaden_band_edit_help_notice' );
 add_action( 'admin_notices', 'musikstaden_application_admin_notices' );
 add_action( 'admin_notices', 'musikstaden_band_admin_notices' );
 add_filter( 'theme_row_meta', 'musikstaden_theme_row_meta', 10, 3 );
@@ -72,6 +73,40 @@ function musikstaden_band_admin_notices(): void {
 	}
 
 	echo '<div class="notice notice-success is-dismissible"><p>' . wp_kses_post( $message ) . '</p></div>';
+}
+
+/**
+ * Help artists find the media embed field on the band editor.
+ */
+function musikstaden_band_edit_help_notice(): void {
+	if ( ! function_exists( 'get_field' ) ) {
+		return;
+	}
+
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || 'band' !== $screen->post_type || ! in_array( $screen->base, array( 'post', 'post-new' ), true ) ) {
+		return;
+	}
+
+	$sync_url = admin_url( 'edit.php?post_type=acf-field-group' );
+	?>
+	<div class="notice notice-info is-dismissible">
+		<p>
+			<strong>Musikstaden:</strong>
+			<?php esc_html_e( 'Scroll to Bandinformation → Spotify and YouTube. Paste embed code in the matching field (Share → Embed).', 'musikstaden' ); ?>
+			<?php
+			printf(
+				' %s',
+				sprintf(
+					/* translators: %s: ACF field groups admin URL */
+					__( 'If you do not see that field, update the theme and sync field groups under %s.', 'musikstaden' ),
+					'<a href="' . esc_url( $sync_url ) . '">Custom Fields</a>'
+				)
+			);
+			?>
+		</p>
+	</div>
+	<?php
 }
 
 /**
