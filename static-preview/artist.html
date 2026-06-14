@@ -14,7 +14,20 @@
     <header class="site-header">
       <div class="container site-header__inner">
         <a href="index.html" class="site-logo"><img src="assets/images/logo.png" alt="Musikstaden" width="200" height="75"></a>
-        <nav class="site-nav">
+        <button
+          type="button"
+          class="site-nav-toggle"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="Öppna meny"
+          data-open-label="Öppna meny"
+          data-close-label="Stäng meny"
+        >
+          <span class="site-nav-toggle__bar" aria-hidden="true"></span>
+          <span class="site-nav-toggle__bar" aria-hidden="true"></span>
+          <span class="site-nav-toggle__bar" aria-hidden="true"></span>
+        </button>
+        <nav id="site-nav" class="site-nav" aria-label="Huvudnavigation">
           <a href="index.html" class="btn btn--outline btn--sm">Ansök</a>
           <a href="#" class="btn btn--primary btn--sm btn--glow">Logga in</a>
         </nav>

@@ -3,6 +3,8 @@
   "nav.apply": { "sv": "Ansök", "en": "Apply" },
   "nav.for_venues": { "sv": "För spelställen", "en": "For Venues" },
   "nav.login": { "sv": "Logga in", "en": "Log in" },
+  "nav.menu_open": { "sv": "Öppna meny", "en": "Open menu" },
+  "nav.menu_close": { "sv": "Stäng meny", "en": "Close menu" },
   "nav.dashboard": { "sv": "Min panel", "en": "Dashboard" },
   "nav.logout": { "sv": "Logga ut", "en": "Log out" },
   "hero.title": { "sv": "Hitta rätt lokal artist för din stad och ditt event", "en": "Find the right local artist for your city and event" },

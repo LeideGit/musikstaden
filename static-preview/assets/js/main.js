@@ -57,9 +57,47 @@
     });
   }
 
+  function initMobileNav() {
+    var toggle = document.querySelector('.site-nav-toggle');
+    var nav = document.getElementById('site-nav');
+    if (!toggle || !nav) return;
+
+    var openLabel = toggle.dataset.openLabel || 'Öppna meny';
+    var closeLabel = toggle.dataset.closeLabel || 'Stäng meny';
+
+    function setOpen(isOpen) {
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      toggle.setAttribute('aria-label', isOpen ? closeLabel : openLabel);
+      nav.classList.toggle('is-open', isOpen);
+    }
+
+    toggle.addEventListener('click', function () {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    nav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        setOpen(false);
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        setOpen(false);
+      }
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.matchMedia('(min-width: 769px)').matches) {
+        setOpen(false);
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initCookieBanner();
     initCardHoverGlow();
     initBookingAccordion();
+    initMobileNav();
   });
 })();
