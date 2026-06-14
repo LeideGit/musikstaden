@@ -231,6 +231,10 @@ a:hover { color: var(--text); }
   margin-inline: auto;
 }
 
+.search-box--hero .search-form__hint {
+  display: none;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;

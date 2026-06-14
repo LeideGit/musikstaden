@@ -26,6 +26,17 @@ $action        = $action ?? musikstaden_search_url();
 			</select>
 		</div>
 		<div class="search-form__field">
+			<label for="genre"><?php ms_e( 'search.genre', 'Genre' ); ?></label>
+			<select id="genre" name="genre">
+				<option value=""><?php ms_e( 'search.genre_placeholder', 'Alla genrer' ); ?></option>
+				<?php foreach ( musikstaden_get_filter_terms( 'genre' ) as $term ) : ?>
+					<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $current_genre, $term->slug ); ?>>
+						<?php echo esc_html( $term->name ); ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<div class="search-form__field">
 			<label for="gig"><?php ms_e( 'search.gig', 'Bokningstyp' ); ?></label>
 			<select id="gig" name="gig">
 				<option value=""><?php ms_e( 'search.gig_placeholder', 'Välj typ' ); ?></option>
@@ -36,17 +47,6 @@ $action        = $action ?? musikstaden_search_url();
 				<?php endforeach; ?>
 			</select>
 			<p class="search-form__hint"><?php ms_e( 'search.gig_hint', 'Bröllop, företag, festival, klubb...' ); ?></p>
-		</div>
-		<div class="search-form__field">
-			<label for="genre"><?php ms_e( 'search.genre', 'Genre' ); ?></label>
-			<select id="genre" name="genre">
-				<option value=""><?php ms_e( 'search.genre_placeholder', 'Alla genrer' ); ?></option>
-				<?php foreach ( musikstaden_get_filter_terms( 'genre' ) as $term ) : ?>
-					<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( $current_genre, $term->slug ); ?>>
-						<?php echo esc_html( $term->name ); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
 		</div>
 	</div>
 	<button type="submit" class="btn btn--primary btn--glow btn--search">
