@@ -82,6 +82,13 @@ a:hover { color: var(--text); }
   flex-wrap: wrap;
 }
 
+.site-header__tools {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-left: auto;
+}
+
 .site-nav__search {
   display: inline-flex;
   align-items: center;
@@ -1434,9 +1441,12 @@ a:hover { color: var(--text); }
     position: relative;
   }
 
+  .site-header__tools {
+    gap: 0.35rem;
+  }
+
   .site-nav-toggle {
     display: flex;
-    margin-left: auto;
   }
 
   .site-nav {
@@ -1463,11 +1473,6 @@ a:hover { color: var(--text); }
   .site-nav .btn {
     width: 100%;
     text-align: center;
-  }
-
-  .site-nav__search {
-    align-self: center;
-    margin: 0 auto;
   }
 }
 
