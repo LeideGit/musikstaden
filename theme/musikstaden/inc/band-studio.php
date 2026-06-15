@@ -506,8 +506,8 @@ function musikstaden_handle_band_studio_save(): void {
 
 	musikstaden_update_band_field( 'biography', wp_kses_post( wp_unslash( $_POST['biography'] ?? '' ) ), $band_id );
 	musikstaden_update_band_field( 'booking_email', sanitize_email( wp_unslash( $_POST['booking_email'] ?? '' ) ), $band_id );
-	musikstaden_update_band_field( 'embed_spotify', sanitize_textarea_field( wp_unslash( $_POST['embed_spotify'] ?? '' ) ), $band_id );
-	musikstaden_update_band_field( 'embed_youtube', sanitize_textarea_field( wp_unslash( $_POST['embed_youtube'] ?? '' ) ), $band_id );
+	musikstaden_update_band_field( 'embed_spotify', musikstaden_sanitize_embed_field( wp_unslash( $_POST['embed_spotify'] ?? '' ) ), $band_id );
+	musikstaden_update_band_field( 'embed_youtube', musikstaden_sanitize_embed_field( wp_unslash( $_POST['embed_youtube'] ?? '' ) ), $band_id );
 
 	$social_fields = array( 'social_instagram', 'social_facebook', 'social_spotify', 'social_youtube', 'social_website' );
 	foreach ( $social_fields as $field ) {

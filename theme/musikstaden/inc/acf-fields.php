@@ -229,9 +229,9 @@ function musikstaden_save_fallback_band_meta( int $post_id, WP_Post $post ): voi
 		update_post_meta( $post_id, 'booking_email', sanitize_email( wp_unslash( $_POST['booking_email'] ) ) );
 	}
 	if ( isset( $_POST['embed_spotify'] ) ) {
-		update_post_meta( $post_id, 'embed_spotify', sanitize_textarea_field( wp_unslash( $_POST['embed_spotify'] ) ) );
+		update_post_meta( $post_id, 'embed_spotify', musikstaden_sanitize_embed_field( wp_unslash( $_POST['embed_spotify'] ) ) );
 	}
 	if ( isset( $_POST['embed_youtube'] ) ) {
-		update_post_meta( $post_id, 'embed_youtube', sanitize_textarea_field( wp_unslash( $_POST['embed_youtube'] ) ) );
+		update_post_meta( $post_id, 'embed_youtube', musikstaden_sanitize_embed_field( wp_unslash( $_POST['embed_youtube'] ) ) );
 	}
 }

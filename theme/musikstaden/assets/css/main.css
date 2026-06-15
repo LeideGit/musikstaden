@@ -358,7 +358,7 @@ a:hover { color: var(--text); }
 }
 
 .search-form__field select,
-.form-row input,
+.form-row input:not([type="checkbox"]):not([type="radio"]),
 .form-row textarea,
 .form-row select,
 .invite-form input,
@@ -375,7 +375,7 @@ a:hover { color: var(--text); }
 }
 
 .search-form__field select:focus,
-.form-row input:focus,
+.form-row input:not([type="checkbox"]):not([type="radio"]):focus,
 .form-row textarea:focus {
   outline: none;
   border-color: var(--purple-bright);
@@ -958,7 +958,7 @@ a:hover { color: var(--text); }
 }
 
 .form-row { margin-bottom: 1rem; }
-.form-row label { display: block; margin-bottom: 0.35rem; font-weight: 500; }
+.form-row > label { display: block; margin-bottom: 0.35rem; font-weight: 500; }
 
 .form-row--inline {
   display: flex;
@@ -1192,31 +1192,59 @@ a:hover { color: var(--text); }
   right: 0;
   max-height: 240px;
   overflow-y: auto;
-  padding: 0.5rem;
+  padding: 0.35rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(109, 40, 217, 0.12);
+  scrollbar-width: thin;
+  scrollbar-color: var(--purple-muted) transparent;
+}
+
+.ms-check-dropdown__menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ms-check-dropdown__menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ms-check-dropdown__menu::-webkit-scrollbar-thumb {
+  background: var(--purple-muted);
+  border-radius: 3px;
 }
 
 .ms-check-dropdown__option {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.5rem;
+  gap: 0.65rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 0.65rem;
   font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.3;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background var(--transition);
 }
 
 .ms-check-dropdown__option:hover {
-  background: rgba(168, 85, 247, 0.1);
+  background: rgba(168, 85, 247, 0.12);
 }
 
-.ms-check-dropdown__option input {
-  accent-color: var(--purple-bright);
+.ms-check-dropdown__option input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  min-width: 1rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
   flex-shrink: 0;
+  accent-color: var(--purple-bright);
+  cursor: pointer;
 }
 
 .ms-check-dropdown.is-invalid .ms-check-dropdown__trigger {

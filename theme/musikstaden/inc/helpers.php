@@ -118,6 +118,60 @@ function musikstaden_get_band_embeds_by_platform( int $post_id ): array {
 }
 
 /**
+ * Sanitize pasted embed field content — preserves iframes and URLs (not strip_tags).
+ */
+function musikstaden_sanitize_embed_field( string $raw ): string {
+	$raw = trim( str_replace( array( "\r\n", "\r" ), "\n", $raw ) );
+	if ( '' === $raw ) {
+		return '';
+	}
+
+	$iframe_allowed = array(
+		'iframe' => array(
+			'src'             => true,
+			'width'           => true,
+			'height'          => true,
+			'style'           => true,
+			'class'           => true,
+			'allow'           => true,
+			'allowfullscreen' => true,
+			'loading'         => true,
+			'title'           => true,
+			'frameborder'     => true,
+		),
+	);
+
+	$blocks    = preg_split( '/\n\s*\n/', $raw ) ?: array( $raw );
+	$sanitized = array();
+
+	foreach ( $blocks as $block ) {
+		$block = trim( (string) $block );
+		if ( '' === $block ) {
+			continue;
+		}
+
+		if ( false !== stripos( $block, '<iframe' ) ) {
+			$clean = wp_kses( $block, $iframe_allowed );
+			$src   = musikstaden_extract_embed_src( $clean );
+			if ( '' !== $src && musikstaden_is_allowed_embed_src( $src ) ) {
+				$sanitized[] = $clean;
+			}
+			continue;
+		}
+
+		$lines = preg_split( '/\n/', $block ) ?: array( $block );
+		foreach ( $lines as $line ) {
+			$line = trim( (string) $line );
+			if ( '' !== $line ) {
+				$sanitized[] = sanitize_textarea_field( $line );
+			}
+		}
+	}
+
+	return implode( "\n\n", $sanitized );
+}
+
+/**
  * Legacy combined embed fields (media_embeds textarea + ACF repeater).
  *
  * @return string[]

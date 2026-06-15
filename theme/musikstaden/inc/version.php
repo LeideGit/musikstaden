@@ -10,8 +10,8 @@
 
 declare(strict_types=1);
 
-define( 'MUSIKSTADEN_VERSION', '1.0.23' );
-define( 'MUSIKSTADEN_VERSION_NAME', 'Studio UI' );
+define( 'MUSIKSTADEN_VERSION', '1.0.24' );
+define( 'MUSIKSTADEN_VERSION_NAME', 'Embed Save Fix' );
 
 /**
  * Full version label for display, e.g. "1.0.1 — Approval Fix".
