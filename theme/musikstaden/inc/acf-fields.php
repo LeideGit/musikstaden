@@ -132,6 +132,13 @@ function musikstaden_register_acf_fields(): void {
 					'type'  => 'text',
 				),
 				array(
+					'key'          => 'field_app_gig_types',
+					'label'        => 'Booking types',
+					'name'         => 'app_gig_types',
+					'type'         => 'text',
+					'instructions' => 'Comma-separated gig_type slugs from the application form.',
+				),
+				array(
 					'key'   => 'field_app_pitch',
 					'label' => 'Pitch',
 					'name'  => 'app_pitch',

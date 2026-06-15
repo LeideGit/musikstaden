@@ -57,6 +57,7 @@ function musikstaden_handle_application(): void {
 	$city      = sanitize_text_field( wp_unslash( $_POST['app_city'] ?? '' ) );
 	$genre     = sanitize_text_field( wp_unslash( $_POST['app_genre'] ?? '' ) );
 	$pitch     = sanitize_textarea_field( wp_unslash( $_POST['app_pitch'] ?? '' ) );
+	$gig_slugs = array_values( array_filter( array_map( 'sanitize_title', (array) ( $_POST['app_gig_types'] ?? array() ) ) ) );
 
 	if ( ! $name || ! is_email( $email ) || ! $band_name ) {
 		wp_safe_redirect( add_query_arg( 'apply', 'error', wp_get_referer() ?: home_url( '/for-artists/' ) ) );
@@ -82,6 +83,7 @@ function musikstaden_handle_application(): void {
 		update_field( 'app_city', $city, $post_id );
 		update_field( 'app_genre', $genre, $post_id );
 		update_field( 'app_pitch', $pitch, $post_id );
+		update_field( 'app_gig_types', implode( ',', $gig_slugs ), $post_id );
 		update_field( 'app_status', 'pending', $post_id );
 	}
 	update_post_meta( $post_id, 'app_email', $email );
@@ -89,6 +91,7 @@ function musikstaden_handle_application(): void {
 	update_post_meta( $post_id, 'app_city', $city );
 	update_post_meta( $post_id, 'app_genre', $genre );
 	update_post_meta( $post_id, 'app_pitch', $pitch );
+	update_post_meta( $post_id, 'app_gig_types', implode( ',', $gig_slugs ) );
 	update_post_meta( $post_id, 'app_status', 'pending' );
 
 	wp_safe_redirect( add_query_arg( 'apply', 'success', wp_get_referer() ?: home_url( '/for-artists/' ) ) );
@@ -121,6 +124,12 @@ function musikstaden_render_application_actions( WP_Post $post ): void {
 	<p><strong><?php esc_html_e( 'Status:', 'musikstaden' ); ?></strong> <?php echo esc_html( ucfirst( (string) $status ) ); ?></p>
 	<?php if ( $email ) : ?>
 		<p><strong><?php esc_html_e( 'Email:', 'musikstaden' ); ?></strong> <?php echo esc_html( (string) $email ); ?></p>
+	<?php endif; ?>
+	<?php
+	$gig_labels = musikstaden_get_application_gig_type_labels( $post->ID );
+	if ( ! empty( $gig_labels ) ) :
+		?>
+		<p><strong><?php esc_html_e( 'Booking types:', 'musikstaden' ); ?></strong> <?php echo esc_html( implode( ', ', $gig_labels ) ); ?></p>
 	<?php endif; ?>
 	<?php if ( $user_id ) : ?>
 		<p>
@@ -425,7 +434,49 @@ function musikstaden_create_band_from_application( int $app_id, int $user_id ): 
 	musikstaden_assign_application_term( $band_id, 'city', $city );
 	musikstaden_assign_application_term( $band_id, 'genre', $genre );
 
+	$gig_slugs = musikstaden_get_application_gig_type_slugs( $app_id );
+	if ( ! empty( $gig_slugs ) ) {
+		wp_set_object_terms( $band_id, $gig_slugs, 'gig_type' );
+	}
+
 	return $band_id;
+}
+
+/**
+ * Gig type slugs stored on an application.
+ *
+ * @return string[]
+ */
+function musikstaden_get_application_gig_type_slugs( int $app_id ): array {
+	$raw = musikstaden_get_application_field( $app_id, 'app_gig_types' );
+	if ( '' === $raw ) {
+		return array();
+	}
+
+	return array_values(
+		array_filter(
+			array_map(
+				static function ( string $slug ): string {
+					return musikstaden_map_legacy_gig_slug( sanitize_title( $slug ) );
+				},
+				array_map( 'trim', explode( ',', $raw ) )
+			)
+		)
+	);
+}
+
+/**
+ * Human-readable gig type labels for an application.
+ *
+ * @return string[]
+ */
+function musikstaden_get_application_gig_type_labels( int $app_id ): array {
+	$labels = array();
+	foreach ( musikstaden_get_application_gig_type_slugs( $app_id ) as $slug ) {
+		$term = get_term_by( 'slug', $slug, 'gig_type' );
+		$labels[] = ( $term && ! is_wp_error( $term ) ) ? $term->name : $slug;
+	}
+	return $labels;
 }
 
 /**
@@ -646,6 +697,19 @@ function musikstaden_render_application_form(): void {
 		<div class="form-row">
 			<label for="app_genre"><?php ms_e( 'apply.genre', 'Genre' ); ?></label>
 			<input type="text" id="app_genre" name="app_genre">
+		</div>
+		<div class="form-row">
+			<label for="app_gig_types-trigger"><?php ms_e( 'apply.gig_types', 'Bokningstyper' ); ?></label>
+			<p class="field-hint"><?php ms_e( 'apply.gig_types_hint', 'Vilka typer av spelningar söker ni? Bröllop, festival, företagsevent m.m.' ); ?></p>
+			<?php
+			musikstaden_render_studio_checkbox_dropdown(
+				'app_gig_types',
+				'app_gig_types',
+				musikstaden_get_filter_terms( 'gig_type' ),
+				array(),
+				ms__( 'apply.gig_types_placeholder', 'Välj bokningstyper' )
+			);
+			?>
 		</div>
 		<div class="form-row">
 			<label for="app_pitch"><?php ms_e( 'apply.pitch', 'Short pitch' ); ?></label>

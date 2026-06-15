@@ -4,6 +4,7 @@ When you upload a new zip, check **Appearance → Themes** — the version numbe
 
 | Version | Name | Changes |
 |---------|------|---------|
+| 1.0.29 | Apply Booking Types | Booking type field on artist application; applied to band on approval |
 | 1.0.28 | Hero Title | Homepage hero: "Lokala artister i din stad, för ditt event" |
 | 1.0.27 | Mobile Search Nav | Search icon visible beside hamburger on mobile, outside the menu |
 | 1.0.26 | Studio Polish | Fix Band Studio browser tab title; hide member invite UI on dashboard |
