@@ -4,7 +4,8 @@ When you upload a new zip, check **Appearance → Themes** — the version numbe
 
 | Version | Name | Changes |
 |---------|------|---------|
-| 1.0.24 | Embed Save Fix | Preserve Spotify/YouTube iframe embeds when saving in Band Studio; fix checkbox dropdown layout |
+| 1.0.25 | Embed Save Fix | Preserve Spotify/YouTube iframe embeds when saving in Band Studio; fix checkbox dropdown layout |
+| 1.0.24 | Embed Save Fix | (superseded by 1.0.25 — same changes, version bump for deploy) |
 | 1.0.23 | Studio UI | Purple h3 section titles on Band Studio; genre and booking type checkbox dropdowns |
 | 1.0.22 | Studio Route Fix | Fix Band Studio 404 (Nothing found) when Edit is clicked; rewrite + fallback routing |
 | 1.0.21 | Band Studio | Frontend band editor for artists; no WordPress admin; dashboard checklist and publish flow; search button in top nav |
