@@ -741,11 +741,6 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 									: esc_html( ms__( 'studio.status_draft', 'Utkast' ) );
 								?>
 							</span>
-							<?php if ( 'publish' === $status ) : ?>
-								<a href="<?php echo esc_url( musikstaden_band_url( $band ) ); ?>" class="band-studio__preview-link" target="_blank" rel="noopener">
-									<?php ms_e( 'studio.view_live', 'Visa live-sida' ); ?> ↗
-								</a>
-							<?php endif; ?>
 						</p>
 					<?php endif; ?>
 				</div>
@@ -912,16 +907,19 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 						</div>
 
 						<div class="band-studio__actions">
-							<button type="submit" name="studio_intent" value="draft" class="btn btn--outline">
-								<?php ms_e( 'studio.save_draft', 'Spara utkast' ); ?>
-							</button>
 							<?php if ( ! $is_create && 'publish' === $status ) : ?>
 								<button type="submit" name="studio_intent" value="unpublish" class="btn btn--outline">
 									<?php ms_e( 'studio.unpublish', 'Avpublicera' ); ?>
 								</button>
 							<?php endif; ?>
-							<button type="submit" name="studio_intent" value="publish" class="btn btn--primary btn--glow" <?php disabled( ! $is_create && ! $can_pub ); ?>>
-								<?php ms_e( 'studio.publish', 'Publicera' ); ?>
+							<button type="submit" name="studio_intent" value="publish" class="btn btn--primary btn--glow" <?php disabled( ! $is_create && ! $can_pub && 'publish' !== $status ); ?>>
+								<?php
+								if ( ! $is_create && 'publish' === $status ) {
+									ms_e( 'studio.save', 'Spara' );
+								} else {
+									ms_e( 'studio.publish', 'Publicera' );
+								}
+								?>
 							</button>
 						</div>
 					</form>

@@ -125,6 +125,7 @@
   "studio.social_youtube": { "sv": "YouTube", "en": "YouTube" },
   "studio.social_website": { "sv": "Webbplats", "en": "Website" },
   "studio.save_draft": { "sv": "Spara utkast", "en": "Save draft" },
+  "studio.save": { "sv": "Spara", "en": "Save" },
   "studio.unpublish": { "sv": "Avpublicera", "en": "Unpublish" },
   "studio.publish": { "sv": "Publicera", "en": "Publish" },
   "studio.delete": { "sv": "Ta bort band", "en": "Delete band" },
