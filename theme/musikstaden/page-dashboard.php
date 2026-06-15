@@ -11,8 +11,6 @@ get_header();
 
 $user_id = get_current_user_id();
 $bands   = musikstaden_get_user_bands( $user_id );
-$invites = musikstaden_get_user_pending_invites( $user_id );
-$notice  = sanitize_text_field( wp_unslash( $_GET['invite'] ?? '' ) );
 $studio  = sanitize_key( wp_unslash( $_GET['studio'] ?? '' ) );
 ?>
 
@@ -36,40 +34,6 @@ $studio  = sanitize_key( wp_unslash( $_GET['studio'] ?? '' ) );
 				<?php echo esc_html( $studio_messages[ $studio ] ); ?>
 			</div>
 			<?php endif; ?>
-		<?php endif; ?>
-
-		<?php if ( $notice ) : ?>
-			<div class="notice notice-<?php echo in_array( $notice, array( 'sent', 'accepted' ), true ) ? 'success' : 'error'; ?>">
-				<?php
-				$messages = array(
-					'sent'          => musikstaden_get_lang() === 'sv' ? 'Inbjudan skickad.' : 'Invite sent.',
-					'accepted'      => musikstaden_get_lang() === 'sv' ? 'Inbjudan accepterad!' : 'Invite accepted!',
-					'error'         => musikstaden_get_lang() === 'sv' ? 'Kunde inte skicka inbjudan.' : 'Could not send invite.',
-					'exists'        => musikstaden_get_lang() === 'sv' ? 'Personen är redan medlem.' : 'Person is already a member.',
-					'limit'         => musikstaden_get_lang() === 'sv' ? 'Bandgräns nådd (max 5).' : 'Band limit reached (max 5).',
-					'invalid'       => musikstaden_get_lang() === 'sv' ? 'Ogiltig inbjudan.' : 'Invalid invite.',
-					'expired'       => musikstaden_get_lang() === 'sv' ? 'Inbjudan har gått ut.' : 'Invite expired.',
-					'wrong_account' => musikstaden_get_lang() === 'sv' ? 'Logga in med rätt konto för att acceptera.' : 'Log in with the correct account to accept.',
-				);
-				echo esc_html( $messages[ $notice ] ?? $notice );
-				?>
-			</div>
-		<?php endif; ?>
-
-		<?php if ( ! empty( $invites ) ) : ?>
-		<section class="dashboard__section">
-			<h2><?php ms_e( 'dashboard.pending_invites', 'Pending Invites' ); ?></h2>
-			<ul class="dashboard__invites">
-				<?php foreach ( $invites as $invite ) : ?>
-					<li>
-						<?php echo esc_html( $invite['band_name'] ); ?> (<?php echo esc_html( ucfirst( $invite['role'] ) ); ?>)
-						<a href="<?php echo esc_url( add_query_arg( 'ms_invite', $invite['token'] ) ); ?>" class="btn btn--primary btn--sm">
-							<?php ms_e( 'dashboard.accept_invite', 'Accept' ); ?>
-						</a>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</section>
 		<?php endif; ?>
 
 		<section class="dashboard__section">
@@ -127,9 +91,6 @@ $studio  = sanitize_key( wp_unslash( $_GET['studio'] ?? '' ) );
 									<a href="<?php echo esc_url( musikstaden_band_edit_url( (int) $band_id ) ); ?>" class="btn btn--primary btn--sm"><?php ms_e( 'dashboard.edit', 'Edit' ); ?></a>
 								<?php endif; ?>
 							</div>
-							<?php if ( $can_edit ) : ?>
-								<?php musikstaden_render_invite_form( (int) $band_id ); ?>
-							<?php endif; ?>
 						</article>
 					<?php endforeach; ?>
 				</div>

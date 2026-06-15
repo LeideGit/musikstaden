@@ -85,6 +85,7 @@
   "dashboard.limit": { "sv": "Bandgräns nådd (max 5).", "en": "Band limit reached (max 5)." },
   "studio.back": { "sv": "Tillbaka till panelen", "en": "Back to dashboard" },
   "studio.create_title": { "sv": "Skapa nytt band", "en": "Create new band" },
+  "studio.edit_page_title": { "sv": "Redigera band", "en": "Edit band" },
   "studio.edit_title": { "sv": "Redigera %s", "en": "Edit %s" },
   "studio.status_live": { "sv": "Publicerad", "en": "Published" },
   "studio.status_draft": { "sv": "Utkast", "en": "Draft" },

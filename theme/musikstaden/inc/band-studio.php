@@ -15,6 +15,8 @@ add_action( 'init', 'musikstaden_ensure_studio_pages', 25 );
 add_action( 'init', 'musikstaden_maybe_flush_studio_rewrites', 99 );
 add_action( 'after_switch_theme', 'musikstaden_ensure_studio_pages' );
 add_action( 'template_redirect', 'musikstaden_studio_template_redirect', 1 );
+add_filter( 'pre_handle_404', 'musikstaden_studio_pre_handle_404', 10, 2 );
+add_filter( 'document_title_parts', 'musikstaden_studio_document_title_parts' );
 add_action( 'admin_post_musikstaden_save_band', 'musikstaden_handle_band_studio_save' );
 add_action( 'admin_post_musikstaden_delete_band', 'musikstaden_handle_band_studio_delete' );
 add_action( 'load-post.php', 'musikstaden_redirect_band_admin_to_studio' );
@@ -97,6 +99,50 @@ function musikstaden_get_studio_route(): ?string {
  */
 function musikstaden_is_studio_screen(): bool {
 	return null !== musikstaden_get_studio_route();
+}
+
+/**
+ * Prevent WordPress from treating Band Studio rewrite URLs as 404.
+ *
+ * @param bool|null $preempt Whether to short-circuit 404 handling.
+ */
+function musikstaden_studio_pre_handle_404( $preempt, WP_Query $query ) {
+	if ( ! $query->is_main_query() ) {
+		return $preempt;
+	}
+	if ( musikstaden_get_studio_route() ) {
+		$query->is_404 = false;
+		return true;
+	}
+	return $preempt;
+}
+
+/**
+ * Set a proper browser tab title on Band Studio screens.
+ *
+ * @param array<string, string> $parts Document title parts.
+ * @return array<string, string>
+ */
+function musikstaden_studio_document_title_parts( array $parts ): array {
+	$route = musikstaden_get_studio_route();
+	if ( ! $route ) {
+		return $parts;
+	}
+
+	if ( 'create' === $route ) {
+		$parts['title'] = ms__( 'studio.create_title', 'Skapa nytt band' );
+		return $parts;
+	}
+
+	$band_id = isset( $_GET['band'] ) ? (int) $_GET['band'] : 0;
+	$band    = $band_id ? get_post( $band_id ) : null;
+	if ( $band instanceof WP_Post && 'band' === $band->post_type ) {
+		$parts['title'] = sprintf( ms__( 'studio.edit_title', 'Redigera %s' ), $band->post_title );
+	} else {
+		$parts['title'] = ms__( 'studio.edit_page_title', 'Redigera band' );
+	}
+
+	return $parts;
 }
 
 /**
