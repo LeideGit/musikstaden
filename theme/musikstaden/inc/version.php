@@ -10,8 +10,8 @@
 
 declare(strict_types=1);
 
-define( 'MUSIKSTADEN_VERSION', '1.0.31' );
-define( 'MUSIKSTADEN_VERSION_NAME', 'Booking Toggle' );
+define( 'MUSIKSTADEN_VERSION', '1.0.32' );
+define( 'MUSIKSTADEN_VERSION_NAME', 'Studio View Page' );
 
 /**
  * Full version label for display, e.g. "1.0.1 — Approval Fix".

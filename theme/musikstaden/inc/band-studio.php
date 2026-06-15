@@ -936,6 +936,11 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 								}
 								?>
 							</button>
+							<?php if ( ! $is_create && 'publish' === $status && $band ) : ?>
+								<a href="<?php echo esc_url( musikstaden_band_url( $band ) ); ?>" class="btn btn--outline" target="_blank" rel="noopener">
+									<?php ms_e( 'dashboard.view', 'Visa sida' ); ?>
+								</a>
+							<?php endif; ?>
 						</div>
 					</form>
 
