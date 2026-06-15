@@ -4,6 +4,7 @@ When you upload a new zip, check **Appearance → Themes** — the version numbe
 
 | Version | Name | Changes |
 |---------|------|---------|
+| 1.0.28 | Hero Title | Homepage hero: "Lokala artister i din stad, för ditt event" |
 | 1.0.27 | Mobile Search Nav | Search icon visible beside hamburger on mobile, outside the menu |
 | 1.0.26 | Studio Polish | Fix Band Studio browser tab title; hide member invite UI on dashboard |
 | 1.0.25 | Embed Save Fix | Preserve Spotify/YouTube iframe embeds when saving in Band Studio; fix checkbox dropdown layout |

@@ -7,9 +7,9 @@
 
 get_header();
 
-$title = ms__( 'hero.title', 'Hitta rätt lokal artist för din stad och ditt event' );
-$h1    = ms__( 'hero.title_highlight_1', 'lokal artist' );
-$h2    = ms__( 'hero.title_highlight_2', 'din stad och ditt event' );
+$title = ms__( 'hero.title', 'Lokala artister i din stad, för ditt event' );
+$h1    = ms__( 'hero.title_highlight_1', 'Lokala artister' );
+$h2    = ms__( 'hero.title_highlight_2', 'ditt event' );
 $title_html = preg_replace(
 	array( '/(' . preg_quote( $h1, '/' ) . ')/iu', '/(' . preg_quote( $h2, '/' ) . ')/iu' ),
 	array( '<span class="hero-banner__highlight">$1</span>', '<span class="hero-banner__highlight">$1</span>' ),

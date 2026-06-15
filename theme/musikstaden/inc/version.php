@@ -10,8 +10,8 @@
 
 declare(strict_types=1);
 
-define( 'MUSIKSTADEN_VERSION', '1.0.27' );
-define( 'MUSIKSTADEN_VERSION_NAME', 'Mobile Search Nav' );
+define( 'MUSIKSTADEN_VERSION', '1.0.28' );
+define( 'MUSIKSTADEN_VERSION_NAME', 'Hero Title' );
 
 /**
  * Full version label for display, e.g. "1.0.1 — Approval Fix".
