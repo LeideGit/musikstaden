@@ -116,6 +116,8 @@
   "studio.field_bio": { "sv": "Biografi", "en": "Biography" },
   "studio.field_booking": { "sv": "Boknings-e-post", "en": "Booking email" },
   "studio.field_booking_hint": { "sv": "Privat adress för bokningsförfrågningar. Visas inte publikt.", "en": "Private address for booking inquiries. Not shown publicly." },
+  "studio.field_booking_inquiries": { "sv": "Ta emot bokningsförfrågningar på artistsidan", "en": "Accept booking inquiries on artist page" },
+  "studio.field_booking_inquiries_hint": { "sv": "När avstängt döljs bokningsmodulen på er publika artistsida.", "en": "When off, the booking module is hidden on your public artist page." },
   "studio.field_spotify": { "sv": "Spotify", "en": "Spotify" },
   "studio.field_youtube": { "sv": "YouTube", "en": "YouTube" },
   "studio.field_embed_hint": { "sv": "Klistra in Spotify-inbäddningskod (Delas → Bädda in) eller länk. Flera? Separera med tom rad.", "en": "Paste Spotify embed code (Share → Embed) or link. Multiple? Separate with a blank line." },

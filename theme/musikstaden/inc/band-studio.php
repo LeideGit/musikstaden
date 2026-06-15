@@ -401,7 +401,7 @@ function musikstaden_get_band_studio_checklist( int $band_id ): array {
 		'booking' => array(
 			'label'    => ms__( 'studio.check_booking', 'Boknings-e-post' ),
 			'done'     => is_email( (string) musikstaden_get_field( 'booking_email', $band_id ) ),
-			'required' => false,
+			'required' => true,
 		),
 	);
 }
@@ -552,6 +552,11 @@ function musikstaden_handle_band_studio_save(): void {
 
 	musikstaden_update_band_field( 'biography', wp_kses_post( wp_unslash( $_POST['biography'] ?? '' ) ), $band_id );
 	musikstaden_update_band_field( 'booking_email', sanitize_email( wp_unslash( $_POST['booking_email'] ?? '' ) ), $band_id );
+	musikstaden_update_band_field(
+		'booking_inquiries_enabled',
+		! empty( $_POST['booking_inquiries_enabled'] ) ? '1' : '0',
+		$band_id
+	);
 	musikstaden_update_band_field( 'embed_spotify', musikstaden_sanitize_embed_field( wp_unslash( $_POST['embed_spotify'] ?? '' ) ), $band_id );
 	musikstaden_update_band_field( 'embed_youtube', musikstaden_sanitize_embed_field( wp_unslash( $_POST['embed_youtube'] ?? '' ) ), $band_id );
 
@@ -699,6 +704,9 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 	$city_terms = $band ? wp_get_post_terms( $band_id, 'city', array( 'fields' => 'slugs' ) ) : array();
 	$genre_terms = $band ? wp_get_post_terms( $band_id, 'genre', array( 'fields' => 'slugs' ) ) : array();
 	$gig_terms  = $band ? wp_get_post_terms( $band_id, 'gig_type', array( 'fields' => 'slugs' ) ) : array();
+	$booking_inquiries_enabled = $band
+		? musikstaden_band_booking_inquiries_enabled( $band_id )
+		: true;
 	$notice     = sanitize_key( wp_unslash( $_GET['studio'] ?? '' ) );
 
 	$notice_messages = array(
@@ -868,9 +876,16 @@ function musikstaden_render_band_studio_form( int $band_id, bool $is_create ): v
 								?>
 							</div>
 							<div class="form-row">
-								<label for="booking_email"><?php ms_e( 'studio.field_booking', 'Boknings-e-post' ); ?></label>
+								<label for="booking_email"><?php ms_e( 'studio.field_booking', 'Boknings-e-post' ); ?> <span class="required">*</span></label>
 								<p class="field-hint"><?php ms_e( 'studio.field_booking_hint', 'Privat adress för bokningsförfrågningar. Visas inte publikt.' ); ?></p>
-								<input type="email" id="booking_email" name="booking_email" placeholder="bokning@band.se" value="<?php echo esc_attr( $band ? (string) musikstaden_get_field( 'booking_email', $band_id ) : '' ); ?>">
+								<input type="email" id="booking_email" name="booking_email" required placeholder="bokning@band.se" value="<?php echo esc_attr( $band ? (string) musikstaden_get_field( 'booking_email', $band_id ) : '' ); ?>">
+							</div>
+							<div class="form-row form-row--checkbox">
+								<label for="booking_inquiries_enabled">
+									<input type="checkbox" id="booking_inquiries_enabled" name="booking_inquiries_enabled" value="1" <?php checked( $booking_inquiries_enabled ); ?>>
+									<?php ms_e( 'studio.field_booking_inquiries', 'Ta emot bokningsförfrågningar på artistsidan' ); ?>
+								</label>
+								<p class="field-hint"><?php ms_e( 'studio.field_booking_inquiries_hint', 'När avstängt döljs bokningsmodulen på er publika artistsida.' ); ?></p>
 							</div>
 						</div>
 

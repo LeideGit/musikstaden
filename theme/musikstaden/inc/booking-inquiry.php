@@ -15,6 +15,17 @@ add_action( 'admin_post_nopriv_musikstaden_booking_inquiry', 'musikstaden_handle
 add_action( 'admin_post_musikstaden_booking_inquiry', 'musikstaden_handle_booking_inquiry' );
 
 /**
+ * Whether booking inquiries are enabled on the public band page.
+ */
+function musikstaden_band_booking_inquiries_enabled( int $band_id ): bool {
+	$value = musikstaden_get_field( 'booking_inquiries_enabled', $band_id );
+	if ( '' === $value || null === $value ) {
+		return true;
+	}
+	return '1' === (string) $value || filter_var( $value, FILTER_VALIDATE_BOOLEAN );
+}
+
+/**
  * Email address that receives booking inquiries for a band.
  * Uses the private booking_email field, then falls back to the band owner's account email.
  */
@@ -137,6 +148,11 @@ function musikstaden_handle_booking_inquiry(): void {
 	$band = get_post( $band_id );
 	if ( ! $band || 'band' !== $band->post_type || 'publish' !== $band->post_status ) {
 		wp_safe_redirect( add_query_arg( 'booking', 'error', $redirect ) );
+		exit;
+	}
+
+	if ( ! musikstaden_band_booking_inquiries_enabled( $band_id ) ) {
+		wp_safe_redirect( add_query_arg( 'booking', 'unavailable', $redirect ) );
 		exit;
 	}
 
@@ -264,6 +280,10 @@ function musikstaden_handle_booking_inquiry(): void {
  */
 function musikstaden_render_booking_form( int $band_id ): void {
 	if ( 'publish' !== get_post_status( $band_id ) ) {
+		return;
+	}
+
+	if ( ! musikstaden_band_booking_inquiries_enabled( $band_id ) ) {
 		return;
 	}
 

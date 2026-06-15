@@ -4,6 +4,7 @@ When you upload a new zip, check **Appearance → Themes** — the version numbe
 
 | Version | Name | Changes |
 |---------|------|---------|
+| 1.0.31 | Booking Toggle | Required booking email; toggle to show/hide booking module on band page |
 | 1.0.30 | Studio Actions | Hide live preview link; Publish → Save for published bands; remove Save draft button |
 | 1.0.29 | Apply Booking Types | Booking type field on artist application; applied to band on approval |
 | 1.0.28 | Hero Title | Homepage hero: "Lokala artister i din stad, för ditt event" |
